@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/secondary_cream">
+
+    <!-- BAŞLIK ALANI -->
+    <LinearLayout
+        android:id="@+id/headerInv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_curved"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingTop="@dimen/_40sdp"
+        android:paddingBottom="@dimen/_24sdp">
+
+        <!-- Geri Butonu -->
+        <LinearLayout
+            android:id="@+id/btnBackInv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_6sdp"
+            android:layout_marginStart="@dimen/_minus6sdp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/white"/>
+        </LinearLayout>
+
+        <!-- Başlık -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Davetiyeler"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:layout_marginStart="@dimen/_10sdp"/>
+
+    </LinearLayout>
+
+    <!-- LİSTE ALANI -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_12sdp">
+
+        <!-- Davet Listesi -->
+        <ListView
+            android:id="@+id/listInvitations"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/_8sdp"
+            android:divider="@android:color/transparent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_16sdp"/>
+
+        <!-- Boş Durum Yazısı -->
+        <TextView
+            android:id="@+id/txtNoInvitations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Henüz bekleyen bir davetiniz yok."
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/text_grey"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <!-- Yükleniyor -->
+        <ProgressBar
+            android:id="@+id/progressBarInv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+</LinearLayout>

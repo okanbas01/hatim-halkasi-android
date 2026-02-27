@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_50sdp">
+
+        <!-- 1. BAŞLIK VE GERİ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+            <ImageView
+                android:id="@+id/btnBackSettings"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/primary_green"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ayarlar"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                android:layout_marginStart="@dimen/_12sdp"/>
+        </LinearLayout>
+
+        <!-- 2. BİLDİRİM AYARLARI -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bildirim Tercihleri"
+            android:textStyle="bold"
+            android:textColor="@color/accent_gold"
+            android:layout_marginBottom="@dimen/_10sdp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardBackgroundColor="@color/white"
+            app:contentPadding="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- DEĞİŞİKLİK: Namaz Vakti Uyarısı SİLİNDİ -->
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchMorning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Günün Sözü"
+                    android:textColor="@color/text_dark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Her sabah 08:00'de ayet/hadis bildirimi."
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/text_grey"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Günlük Hedef Hatırlatıcı"
+                    android:textColor="@color/text_dark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Her akşam 21:00'de hedefini hatırlat."
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/text_grey"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 3. HESAP VE GÜVENLİK (SADECE ÜYELER) -->
+        <LinearLayout
+            android:id="@+id/layoutProfileSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D7CCC8"
+                android:layout_marginBottom="@dimen/_20sdp"/>
+
+            <!-- PROFİL BİLGİLERİ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hesap Bilgileri"
+                android:textStyle="bold"
+                android:textColor="@color/accent_gold"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Adınız Soyadınız"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEditName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:inputType="textPersonName|textCapWords"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kullanıcı Adı"
+                android:layout_marginTop="@dimen/_10sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEditUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:inputType="textNoSuggestions"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnUpdateProfile"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Bilgileri Güncelle"
+                android:textSize="@dimen/_12ssp"
+                android:backgroundTint="@color/primary_green"
+                android:layout_marginTop="@dimen/_12sdp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D7CCC8"
+                android:layout_marginVertical="@dimen/_24sdp"/>
+
+            <!-- ŞİFRE DEĞİŞTİRME -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Güvenlik (Şifre Değiştir)"
+                android:textStyle="bold"
+                android:textColor="@color/accent_gold"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mevcut Şifre"
+                app:endIconMode="password_toggle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCurrentPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Yeni Şifre"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:endIconMode="password_toggle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNewPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnUpdatePassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Şifreyi Değiştir"
+                android:textSize="@dimen/_12ssp"
+                android:backgroundTint="#5D4037"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_24sdp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

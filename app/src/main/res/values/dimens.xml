@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_side_margin">16dp</dimen>
+
+    <!-- ✅ Nav bar ile FAB arası boşluk: bunu ayarlayınca her cihazda aynı his -->
+    <dimen name="fab_nav_gap">12dp</dimen>
+</resources>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_cream"
+    tools:context=".HatimDetailActivity">
+
+    <!-- 1. ÜST YEŞİL ALAN -->
+    <LinearLayout
+        android:id="@+id/headerDetail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_180sdp"
+        android:background="@drawable/bg_header_curved"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingTop="@dimen/_40sdp">
+
+        <!-- GERİ BUTONU -->
+        <LinearLayout
+            android:id="@+id/btnBackDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_6sdp"
+            android:layout_marginStart="@dimen/_minus6sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Geri"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="@dimen/_11ssp"
+                android:layout_marginStart="@dimen/_4sdp"/>
+        </LinearLayout>
+
+        <!-- Başlıklar -->
+        <TextView
+            android:id="@+id/txtDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hatim Başlığı"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <TextView
+            android:id="@+id/txtDetailInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Birlikte tamamlayalım..."
+            android:textColor="#E8F5E9"
+            android:textSize="@dimen/_11ssp"
+            android:layout_marginTop="@dimen/_4sdp"/>
+    </LinearLayout>
+
+    <!-- 2. İŞLEM PANELİ -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_minus30sdp"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardElevation="@dimen/_4sdp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/headerDetail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            android:gravity="center">
+
+            <!-- 1. PAYLAŞ -->
+            <LinearLayout
+                android:id="@+id/btnShareWhatsapp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true">
+                <ImageView
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:src="@android:drawable/ic_menu_share"
+                    app:tint="@color/primary_green"
+                    android:background="@drawable/bg_icon_circle_transparent"
+                    android:backgroundTint="#E8F5E9"
+                    android:padding="@dimen/_8sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paylaş"
+                    android:textColor="@color/primary_green"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/_4sdp"/>
+            </LinearLayout>
+
+            <!-- 2. DAVET ET -->
+            <LinearLayout
+                android:id="@+id/btnInviteFriend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true">
+                <ImageView
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:src="@drawable/ic_person_add_premium"
+                    app:tint="#F57F17"
+                    android:background="@drawable/bg_icon_circle_transparent"
+                    android:backgroundTint="#FFF3E0"
+                    android:padding="@dimen/_8sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Davet"
+                    android:textColor="#F57F17"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/_4sdp"/>
+            </LinearLayout>
+
+            <!-- 3. DÜZENLE -->
+            <LinearLayout
+                android:id="@+id/btnEditHatim"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:src="@drawable/ic_edit"
+                    app:tint="#1976D2"
+                    android:background="@drawable/bg_icon_circle_transparent"
+                    android:backgroundTint="#E3F2FD"
+                    android:padding="@dimen/_8sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Düzenle"
+                    android:textColor="#1976D2"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/_4sdp"/>
+            </LinearLayout>
+
+            <!-- 4. SİL -->
+            <LinearLayout
+                android:id="@+id/btnDeleteHatim"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="#D32F2F"
+                    android:background="@drawable/bg_icon_circle_transparent"
+                    android:backgroundTint="#FFEBEE"
+                    android:padding="@dimen/_8sdp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sil"
+                    android:textColor="#D32F2F"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/_4sdp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 3. CÜZ LİSTESİ -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerJuzList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:padding="@dimen/_12sdp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardActions" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

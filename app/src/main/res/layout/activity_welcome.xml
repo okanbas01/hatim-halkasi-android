@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream">
+
+    <!-- LOGO BÖLÜMÜ -->
+    <LinearLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsContainer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.45">
+
+        <!-- Logo Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            app:cardCornerRadius="@dimen/_24sdp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/app_logo_final"
+                android:scaleType="fitCenter"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- App Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/primary_green"
+            android:textSize="@dimen/_26ssp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:layout_marginTop="@dimen/_24sdp"/>
+
+        <!-- Description -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Birlikte okuyalım,\nbirlikte tamamlayalım."
+            android:textAlignment="center"
+            android:textColor="@color/text_grey"
+            android:textSize="@dimen/_14ssp"
+            android:lineSpacingExtra="@dimen/_4sdp"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="@dimen/_10sdp"/>
+    </LinearLayout>
+
+    <!-- BUTONLAR -->
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_24sdp"
+        android:layout_marginBottom="@dimen/_24sdp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- 1. Giriş Yap -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            android:text="Giriş Yap"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_button_rounded_primary"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"/>
+
+        <!-- 2. Kayıt Ol -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="Kayıt Ol"
+            android:textColor="@color/btn_secondary_text"
+            android:background="@drawable/bg_button_rounded_secondary"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"/>
+
+        <!-- 3. Misafir -->
+        <TextView
+            android:id="@+id/btnSkip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Misafir Olarak Devam Et"
+            android:textColor="@color/primary_green"
+            android:gravity="center"
+            android:padding="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:textSize="@dimen/_12ssp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

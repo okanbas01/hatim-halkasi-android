@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="14dp"
+    android:paddingHorizontal="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Küçük İkon -->
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_nav_city"
+        android:layout_marginEnd="12dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
+    <!-- ic_nav_mosque yoksa ic_location_on kullanabilirsin -->
+
+    <!-- Şehir İsmi -->
+    <TextView
+        android:id="@+id/txtCityName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Şehir İsmi"
+        android:textColor="@color/text_dark"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <!-- Sağ Ok (İsteğe bağlı, liste olduğunu belli eder) -->
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_media_play"
+        android:rotation="0"
+        app:tint="#BDBDBD"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
+
+</LinearLayout>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Başlık -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_dialog_map"
+                app:tint="@color/primary_green"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Konum Tercihi"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                android:layout_marginStart="12dp"
+                android:fontFamily="serif"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Namaz vakitlerini doğru hesaplayabilmemiz için bir yöntem seçin."
+            android:textColor="@color/text_grey"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- SEÇENEK 1: GPS -->
+        <LinearLayout
+            android:id="@+id/btnSelectGPS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:background="@drawable/bg_card_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_mylocation"
+                app:tint="@color/accent_gold"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <!-- EKSİK OLAN BOYUTLAR EKLENDİ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Konumumu Bul"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:textSize="16sp"/>
+
+                <!-- EKSİK OLAN BOYUTLAR EKLENDİ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GPS kullanarak otomatik algıla"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_grey"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="@color/text_secondary"/>
+        </LinearLayout>
+
+        <!-- SEÇENEK 2: LİSTE -->
+        <LinearLayout
+            android:id="@+id/btnSelectManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:background="@drawable/bg_card_border"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_nav_mosque"
+                app:tint="@color/accent_gold"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <!-- EKSİK OLAN BOYUTLAR EKLENDİ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Şehir Seç"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:textSize="16sp"/>
+
+                <!-- EKSİK OLAN BOYUTLAR EKLENDİ -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Listeden manuel olarak ayarla"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_grey"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="@color/text_secondary"/>
+        </LinearLayout>
+
+        <!-- İptal -->
+        <TextView
+            android:id="@+id/btnCancelLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vazgeç"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

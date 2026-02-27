@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_cream"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_24sdp">
+
+        <!-- 1. BAŞLIK VE GERİ BUTONU -->
+        <LinearLayout
+            android:id="@+id/headerKaza"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_130sdp"
+            android:background="@drawable/bg_header_curved"
+            android:orientation="vertical"
+            android:padding="@dimen/_20sdp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- GERİ BUTONU -->
+            <LinearLayout
+                android:id="@+id/btnBackKaza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_6sdp"
+                android:layout_marginStart="@dimen/_minus6sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Geri"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11ssp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_4sdp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kaza Takip"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_24ssp"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_marginTop="@dimen/_6sdp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Borçlarımızı ödemeyi nasip et."
+                android:textColor="#E8F5E9"
+                android:textSize="@dimen/_11ssp"/>
+        </LinearLayout>
+
+        <!-- 2. SAYAÇLAR LİSTESİ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_minus16sdp">
+
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemSabah"/>
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemOgle"/>
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemIkindi"/>
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemAksam"/>
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemYatsi"/>
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemVitir"/>
+            <include layout="@layout/item_kaza_counter" android:id="@+id/itemOruc"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

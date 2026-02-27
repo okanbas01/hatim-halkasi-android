@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <!-- Rozet İkonu -->
+    <TextView
+        android:id="@+id/txtUnlockIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🌙"
+        android:textSize="64sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Başlık -->
+    <TextView
+        android:id="@+id/txtUnlockTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rozet Kazandın!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#1B5E20"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Rozet Adı -->
+    <TextView
+        android:id="@+id/txtUnlockBadgeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="İlk Adım"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Manevi Mesaj -->
+    <TextView
+        android:id="@+id/txtUnlockMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kur'an okumaya başladığın için Allah razı olsun."
+        android:textSize="14sp"
+        android:textColor="#616161"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Paylaş Butonu -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnShareBadge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rozetini Paylaş"
+        android:textColor="@color/white"
+        app:backgroundTint="#1B5E20"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Kapat Butonu -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCloseBadge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tamam"
+        android:textColor="#1B5E20"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+</LinearLayout>

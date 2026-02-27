@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp" android:height="300dp" android:viewportWidth="100" android:viewportHeight="100">
+    <!-- Uzun, Şık Altın/Yeşil Ok -->
+    <path android:fillColor="#1B5E20" android:pathData="M48,50 L50,10 L52,50 Z"/> <!-- Sivri Uç -->
+    <path android:fillColor="#C5A059" android:pathData="M48,50 L50,80 L52,50 Z"/> <!-- Kuyruk -->
+
+    <!-- Merkez Nokta -->
+    <path android:fillColor="#FFFFFF" android:pathData="M50,50 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"/>
+    <path android:strokeWidth="2" android:strokeColor="#1B5E20" android:pathData="M50,50 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"/>
+</vector>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/secondary_cream">
+
+    <!-- Üst: Geri + Başlık (üst boşluk artırıldı, Geri daha rahat tıklanır) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:background="@drawable/bg_header_curved"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/btnQuizBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:minHeight="48dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_arrow_back" app:tint="@color/white"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Geri" android:textColor="@color/white" android:textSize="14sp" android:textStyle="bold" android:layout_marginStart="6dp"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bilgi Yarışması"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:layout_marginTop="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temel dini bilgilerle kendini test et."
+            android:textColor="#E8F5E9"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Compose giriş ekranı (responsive, production) -->
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/quizWelcomeCompose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!-- Oyun + Oyun bitti (XML) -->
+        <ScrollView
+            android:id="@+id/quizGameScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+            <!-- Oyun ekranı: ferah boşluklar, okunaklı yazılar, belirgin Onayla butonu -->
+            <LinearLayout
+                android:id="@+id/layoutQuizGame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+                    <TextView android:id="@+id/txtQuizScore" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="16sp" android:textColor="@color/primary_green" android:textStyle="bold" android:text="Puan: 0"/>
+                    <TextView android:id="@+id/txtQuizQuestionNum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="@color/text_grey" android:text="1/∞"/>
+                </LinearLayout>
+
+                <TextView android:id="@+id/txtQuizQuestion" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="17sp" android:textColor="@color/text_dark" android:textStyle="bold" android:lineSpacingExtra="6dp" android:layout_marginBottom="20dp"/>
+
+                <TextView android:id="@+id/option0" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:gravity="center_vertical" android:paddingHorizontal="18dp" android:paddingVertical="16dp" android:background="@drawable/bg_quiz_option" android:textSize="15sp" android:textColor="@color/text_dark" android:layout_marginBottom="10dp" android:clickable="true" android:focusable="true"/>
+                <TextView android:id="@+id/option1" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:gravity="center_vertical" android:paddingHorizontal="18dp" android:paddingVertical="16dp" android:background="@drawable/bg_quiz_option" android:textSize="15sp" android:textColor="@color/text_dark" android:layout_marginBottom="10dp" android:clickable="true" android:focusable="true"/>
+                <TextView android:id="@+id/option2" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:gravity="center_vertical" android:paddingHorizontal="18dp" android:paddingVertical="16dp" android:background="@drawable/bg_quiz_option" android:textSize="15sp" android:textColor="@color/text_dark" android:layout_marginBottom="10dp" android:clickable="true" android:focusable="true"/>
+                <TextView android:id="@+id/option3" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:gravity="center_vertical" android:paddingHorizontal="18dp" android:paddingVertical="16dp" android:background="@drawable/bg_quiz_option" android:textSize="15sp" android:textColor="@color/text_dark" android:layout_marginBottom="24dp" android:clickable="true" android:focusable="true"/>
+
+                <TextView android:id="@+id/btnQuizConfirm" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="center" android:text="Onayla" android:textSize="17sp" android:textStyle="bold" android:textColor="@color/white" android:background="@drawable/bg_btn_primary" android:clickable="true" android:focusable="true" android:enabled="false"/>
+            </LinearLayout>
+
+            <!-- Oyun bitti ekranı (gizli) -->
+            <LinearLayout
+                android:id="@+id/layoutQuizOver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                android:paddingTop="24dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Oyun bitti" android:textSize="18sp" android:textStyle="bold" android:textColor="@color/text_dark"/>
+                <TextView android:id="@+id/txtQuizFinalScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="@color/primary_green" android:layout_marginTop="8dp" android:text="Puan: 0"/>
+                <TextView android:id="@+id/btnQuizRestart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yeniden başla" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/white" android:background="@drawable/bg_btn_primary" android:paddingHorizontal="28dp" android:paddingVertical="14dp" android:layout_marginTop="20dp" android:clickable="true" android:focusable="true"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    </FrameLayout>
+</LinearLayout>

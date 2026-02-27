@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_cream">
+
+    <!-- BAŞLIK VE GERİ BUTONU -->
+    <LinearLayout
+        android:id="@+id/headerEsma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_curved"
+        android:orientation="vertical"
+        android:padding="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- GERİ BUTONU -->
+        <LinearLayout
+            android:id="@+id/btnBackEsma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_6sdp"
+            android:layout_marginStart="@dimen/_minus6sdp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Geri"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11ssp"
+                android:layout_marginStart="@dimen/_4sdp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Esma-ül Hüsna"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_22ssp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:layout_marginTop="@dimen/_6sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="En güzel isimler Allah'ındır."
+            android:textColor="#E8F5E9"
+            android:textSize="@dimen/_11ssp"/>
+    </LinearLayout>
+
+    <!-- LİSTE -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerEsma"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/_90sdp"
+        app:layout_constraintTop_toBottomOf="@+id/headerEsma"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <!-- paddingBottom _90sdp: Menünün altında kalmasın diye -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

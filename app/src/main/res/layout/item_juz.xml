@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardJuz"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_70sdp"
+    android:layout_margin="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E0E0E0"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/_3sdp">
+
+        <!-- Cüz Numarası -->
+        <TextView
+            android:id="@+id/txtJuzNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:textColor="@color/primary_green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CÜZ"
+            android:textSize="@dimen/_6ssp"
+            android:letterSpacing="0.1"
+            android:textColor="@color/text_grey"/>
+
+        <!-- Durum İkonu -->
+        <ImageView
+            android:id="@+id/imgStatus"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:src="@android:drawable/checkbox_off_background"
+            app:tint="@color/text_grey"/>
+
+        <!-- Alan Kişinin Adı -->
+        <TextView
+            android:id="@+id/txtOwner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ali"
+            android:textSize="@dimen/_7ssp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/text_dark"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_2sdp"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

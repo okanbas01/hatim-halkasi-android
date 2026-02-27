@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Seçili olduğunda ikon BEYAZ olsun (Çünkü arkası altın sarısı) -->
+    <item android:color="@color/white" android:state_selected="true" />
+
+    <!-- Seçili değilken ikon GRİ olsun -->
+    <item android:color="#757575" />
+</selector>

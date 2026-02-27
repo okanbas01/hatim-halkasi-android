@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Splash: Logo + başlık + alt metin. Alpha/translationY kodda ayarlanır (XML'de değil). -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_intro">
+
+    <ImageView
+        android:id="@+id/imgLogoSplash"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:visibility="invisible"
+        android:contentDescription="@null"
+        android:src="@drawable/app_logo_final"
+        app:layout_constraintBottom_toTopOf="@+id/txtAppNameSplash"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <TextView
+        android:id="@+id/txtAppNameSplash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:fontFamily="serif"
+        android:text="Hatim Halkası"
+        android:textColor="@color/primary_green"
+        android:textSize="32sp"
+        android:letterSpacing="0.05"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogoSplash"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txtSloganSplash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="Birlikte okuyalım, birlikte tamamlayalım"
+        android:textColor="@color/text_grey"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtAppNameSplash" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

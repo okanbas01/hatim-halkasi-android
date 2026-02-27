@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardBadge"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- Rozet İkonu -->
+            <TextView
+                android:id="@+id/txtBadgeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌙"
+                android:textSize="48sp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Rozet Adı -->
+            <TextView
+                android:id="@+id/txtBadgeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="İlk Adım"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:layout_marginBottom="4dp"/>
+
+            <!-- Manevi Açıklama -->
+            <TextView
+                android:id="@+id/txtBadgeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kur'an okumaya başladığın için Allah razı olsun."
+                android:textSize="12sp"
+                android:textColor="#616161"
+                android:gravity="center"
+                android:maxLines="3"
+                android:ellipsize="end"/>
+
+        </LinearLayout>
+
+        <!-- Kilit Overlay -->
+        <View
+            android:id="@+id/viewLocked"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80FFFFFF"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

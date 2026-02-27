@@ -1,0 +1,52 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="400dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Desen Grubu -->
+    <group>
+
+        <!-- 1. BÜYÜK HİLAL (Sağ Üstte) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M140,20 A35,35 0 1,1 140,90 A28,28 0 1,0 140,20 Z"
+            android:alpha="0.15"/> <!-- Biraz daha belirgin -->
+
+        <!-- 2. CAMİ SİLÜETİ (Altta) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:alpha="0.12"
+            android:pathData="
+                M20,180 L180,180 L180,170
+
+                M150,170 L150,80 L145,70 L155,70 L150,80 L150,170
+                M50,170 L50,80 L45,70 L55,70 L50,80 L50,170
+
+                M60,170 Q100,90 140,170 Z"/>
+        <!-- (Zemin çizgisi, Sağ Minare, Sol Minare, Orta Kubbe) -->
+
+        <!-- 3. MİNARE ALEMLERİ (Hilaller) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M48.5,65 A3,3 0 1,1 48.5,71 A2.5,2.5 0 1,0 48.5,65 Z"
+            android:alpha="0.15"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M148.5,65 A3,3 0 1,1 148.5,71 A2.5,2.5 0 1,0 148.5,65 Z"
+            android:alpha="0.15"/>
+
+        <!-- 4. KÜÇÜK YILDIZLAR (Süsleme) -->
+        <!-- Selçuklu tarzı 8 köşeli küçük yıldızlar -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M30,40 L33,50 L43,50 L35,56 L38,66 L30,60 L22,66 L25,56 L17,50 L27,50 Z"
+            android:alpha="0.1"/>
+
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M100,30 L102,36 L108,36 L103,40 L105,46 L100,42 L95,46 L97,40 L92,36 L98,36 Z"
+            android:alpha="0.1"/>
+
+    </group>
+</vector>

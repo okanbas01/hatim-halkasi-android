@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_header_curved"
+    android:backgroundTint="@color/white"
+    android:paddingBottom="0dp">
+
+    <!-- Tutamaç Çizgisi -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="#E0E0E0"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Başlık -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vakit Bildirim Ayarları"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_green"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Vakitler (Satırlar) -->
+    <include
+        android:id="@+id/rowFajr"
+        layout="@layout/item_prayer_setting_row" />
+    <include
+        android:id="@+id/rowDhuhr"
+        layout="@layout/item_prayer_setting_row" />
+    <include
+        android:id="@+id/rowAsr"
+        layout="@layout/item_prayer_setting_row" />
+    <include
+        android:id="@+id/rowMaghrib"
+        layout="@layout/item_prayer_setting_row" />
+    <include
+        android:id="@+id/rowIsha"
+        layout="@layout/item_prayer_setting_row" />
+
+    <!-- 1. KART: KERAHAT UYARISI -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#FFF3E0"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_nav_spirit"
+                android:tint="#F57C00" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kerahat Vakti Uyarısı"
+                    android:textStyle="bold"
+                    android:textColor="#E65100"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Akşam namazına 45 dk kala uyar"
+                    android:textSize="11sp"
+                    android:textColor="#EF6C00"/>
+            </LinearLayout>
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchKerahat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 2. KART: VAKİT ÖNCESİ UYARI -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#E3F2FD"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <!-- ✅ YENİ: Saat/Zil temalı ikon -->
+            <ImageView
+                android:id="@+id/imgPreWarningIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_pre_warning"
+                android:tint="#1565C0"
+                android:contentDescription="Vakit öncesi uyarı" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vakit Öncesi Uyarı"
+                    android:textStyle="bold"
+                    android:textColor="#0D47A1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tüm vakitlerden 15 dk önce uyar"
+                    android:textSize="11sp"
+                    android:textColor="#1976D2"/>
+            </LinearLayout>
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchPreWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- İKON ANLAMLARI (LEJANT) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:paddingVertical="16dp"
+        android:background="#F5F5F5">
+
+        <!-- Ezan -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="16dp">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_sound_adhan" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": Ezan"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#666"
+                android:layout_marginStart="6dp"/>
+        </LinearLayout>
+
+        <!-- Uyarı -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="16dp">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_sound_beep" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": Uyarı"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#666"
+                android:layout_marginStart="6dp"/>
+        </LinearLayout>
+
+        <!-- Sessiz -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_sound_silent"
+                android:alpha="0.4"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": Sessiz"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#666"
+                android:layout_marginStart="6dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

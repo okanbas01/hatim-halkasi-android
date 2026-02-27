@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Ana Yeşil Gradyan -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#1B5E20"
+                android:centerColor="#2E7D32"
+                android:endColor="#1B5E20"
+                android:angle="45" />
+        </shape>
+    </item>
+    <!-- Altın Çerçeve -->
+    <item android:top="12dp" android:bottom="12dp" android:left="12dp" android:right="12dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#C5A059" />
+            <corners android:radius="0dp" />
+            <solid android:color="#00000000"/>
+        </shape>
+    </item>
+    <!-- Süsleme -->
+    <item android:top="-40dp" android:right="-40dp">
+        <shape android:shape="oval">
+            <solid android:color="#20C5A059"/>
+            <size android:width="150dp" android:height="150dp"/>
+        </shape>
+    </item>
+</layer-list>

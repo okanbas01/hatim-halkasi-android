@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="@dimen/_10sdp"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_card_border"
+    android:layout_marginBottom="@dimen/_4sdp">
+
+    <!-- Profil İkonu -->
+    <FrameLayout
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
+        android:background="@drawable/bg_circle_gold"
+        android:backgroundTint="#E0F2F1">
+
+        <ImageView
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:src="@drawable/ic_nav_user_islamic"
+            app:tint="@color/primary_green"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <!-- İsim ve Kullanıcı Adı -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/txtFriendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ahmet Yılmaz"
+            android:textColor="@color/text_dark"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12ssp"/>
+
+        <TextView
+            android:id="@+id/txtFriendUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(@ahmet123)"
+            android:textColor="@color/text_grey"
+            android:textSize="@dimen/_10ssp"/>
+    </LinearLayout>
+
+    <!-- SİLME BUTONU (ÇÖP KOVASI) -->
+    <ImageView
+        android:id="@+id/btnDeleteFriend"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:src="@drawable/ic_delete"
+        app:tint="#D32F2F"
+        android:padding="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"/>
+    <!-- Not: ic_delete yoksa android:src="@android:drawable/ic_menu_delete" kullanabilirsin -->
+
+</LinearLayout>

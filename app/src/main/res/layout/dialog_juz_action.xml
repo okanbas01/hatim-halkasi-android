@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_250sdp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_18sdp"
+    app:cardElevation="@dimen/_8sdp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Başlık Alanı -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_green"
+            android:padding="@dimen/_18sdp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txtDialogTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Cüz İşlemi"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16ssp"
+                android:textStyle="bold"
+                android:fontFamily="serif"/>
+        </LinearLayout>
+
+        <!-- İçerik -->
+        <TextView
+            android:id="@+id/txtDialogMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bu cüzü okumak için almak ister misiniz?"
+            android:textAlignment="center"
+            android:padding="@dimen/_18sdp"
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/_12ssp"
+            android:lineSpacingExtra="@dimen/_3sdp"/>
+
+        <!-- Butonlar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp">
+
+            <!-- 1. POZİTİF BUTON (Tamamla / Al) -->
+            <Button
+                android:id="@+id/btnPositive"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Cüzü Al"
+                android:backgroundTint="@color/primary_green"
+                app:cornerRadius="@dimen/_10sdp"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"/>
+
+            <!-- 2. NÖTR BUTON (Oku) -->
+            <Button
+                android:id="@+id/btnNeutral"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="📖 Ayetleri Oku"
+                android:textColor="@color/primary_green"
+                android:backgroundTint="#F1F8E9"
+                app:cornerRadius="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"/>
+
+            <!-- 3. NEGATİF BUTON (Cüzü Bırak / İptal Et) -->
+            <Button
+                android:id="@+id/btnNegative"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Cüzü Bırak"
+                android:textColor="#D32F2F"
+                android:backgroundTint="#FFEBEE"
+                app:cornerRadius="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"/>
+
+            <!-- 4. KAPAT (Vazgeç) -->
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kapat"
+                android:textColor="@color/text_grey"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_11ssp"
+                android:layout_marginTop="@dimen/_2sdp"/>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

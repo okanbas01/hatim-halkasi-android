@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_12sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_12sdp">
+
+        <!-- Zarf İkonu -->
+        <ImageView
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@android:drawable/ic_dialog_email"
+            app:tint="#EF6C00"
+            android:background="@drawable/bg_icon_circle_transparent"
+            android:backgroundTint="#FFF3E0"
+            android:padding="@dimen/_8sdp"/>
+
+        <!-- Yazılar -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_12sdp">
+
+            <TextView
+                android:id="@+id/txtHatimName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ramazan Hatmi"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/_12ssp"/>
+
+            <TextView
+                android:id="@+id/txtInviterName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Davet Eden: Ahmet"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_2sdp"/>
+        </LinearLayout>
+
+        <!-- Sağ Ok -->
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/accent_gold"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

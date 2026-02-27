@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_nav_dashboard"
+        android:title="Anasayfa" />
+
+    <item
+        android:id="@+id/nav_quran"
+        android:icon="@drawable/ic_nav_quran_menu"
+        android:title="Hatimler" />
+
+    <item
+        android:id="@+id/nav_spirit"
+        android:icon="@drawable/ic_nav_spirit"
+        android:title="Maneviyat" />
+
+    <item
+        android:id="@+id/nav_community"
+        android:icon="@drawable/ic_nav_community"
+        android:title="Meclis" />
+
+</menu>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_90sdp">
+
+        <!-- PROFİL RESMİ -->
+        <ImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_marginTop="@dimen/_12sdp"/>
+
+        <TextView
+            android:id="@+id/txtProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yükleniyor..."
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_green"
+            android:layout_marginTop="@dimen/_12sdp"/>
+
+        <TextView
+            android:id="@+id/txtProfileUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:textSize="@dimen/_11ssp"
+            android:textColor="@color/text_grey"
+            android:layout_marginBottom="@dimen/_20sdp"/>
+
+        <!-- İSTATİSTİK KUTULARI -->
+        <!-- İSTATİSTİK KUTULARI -->
+        <!-- Intrinsic Height Measurement için gerekli ayarlar yapıldı -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:baselineAligned="false">
+
+            <!-- 1. Kutu: Tamamlanan Hatim -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardElevation="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                app:contentPadding="@dimen/_12sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtTotalHatims"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="@dimen/_20ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/accent_gold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tamamlanan\nHatim"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/text_grey"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. Kutu: Okunan Cüz -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardElevation="@dimen/_3sdp"
+                android:layout_marginStart="@dimen/_6sdp"
+                app:contentPadding="@dimen/_12sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtTotalJuzs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="@dimen/_20ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/accent_gold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Okunan\nCüz"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/text_grey"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D7CCC8"
+            android:layout_marginBottom="@dimen/_20sdp"/>
+
+        <!-- MANEVİ YOLCULUĞUM - ROZET ALANI -->
+        <LinearLayout
+            android:id="@+id/sectionBadges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/_12sdp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="📿 Manevi Yolculuğum"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_green"
+                    android:fontFamily="serif"/>
+
+                <TextView
+                    android:id="@+id/txtBadgeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 Rozet"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/text_grey"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerBadges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D7CCC8"
+            android:layout_marginBottom="@dimen/_20sdp"/>
+
+        <!-- AYARLAR BUTONU -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfileSettings"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:text="Ayarlar ve Bildirimler"
+            app:backgroundTint="@color/accent_gold"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:textSize="@dimen/_12ssp"
+            app:icon="@android:drawable/ic_menu_preferences"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/_10sdp"/>
+
+        <!-- ÜYE İŞLEMLERİ -->
+        <LinearLayout
+            android:id="@+id/layoutMemberActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProfileLogout"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:text="Çıkış Yap"
+                android:textSize="@dimen/_12ssp"
+                app:backgroundTint="#D32F2F"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!-- MİSAFİR İŞLEMLERİ -->
+        <LinearLayout
+            android:id="@+id/layoutGuestActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="İstatistiklerinin kaybolmaması için üye ol."
+                android:gravity="center"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProfileLogin"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Giriş Yap"
+                android:textSize="@dimen/_12ssp"
+                app:backgroundTint="@color/primary_green"
+                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/_10sdp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProfileRegister"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Kayıt Ol"
+                android:textSize="@dimen/_12ssp"
+                app:backgroundTint="#5D4037"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

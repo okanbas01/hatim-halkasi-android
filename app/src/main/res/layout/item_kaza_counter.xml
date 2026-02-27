@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_10sdp">
+
+        <!-- İkon ve İsim -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtKazaName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vakit İsmi"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                android:textSize="@dimen/_12ssp"/>
+        </LinearLayout>
+
+        <!-- Sayaç Kontrolleri -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- AZALT BUTONU (BÜYÜTÜLDÜ) -->
+            <ImageView
+                android:id="@+id/btnMinus"
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:src="@drawable/ic_remove"
+                app:tint="#FF7043"
+                android:padding="@dimen/_6sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"/>
+
+            <!-- SAYI -->
+            <TextView
+                android:id="@+id/txtKazaCount"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"/>
+
+            <!-- ARTIR BUTONU (BÜYÜTÜLDÜ) -->
+            <ImageView
+                android:id="@+id/btnPlus"
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:src="@android:drawable/ic_input_add"
+                app:tint="@color/primary_green"
+                android:padding="@dimen/_6sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

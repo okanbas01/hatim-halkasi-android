@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_12sdp"
+    android:layout_marginVertical="@dimen/_6sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_12sdp">
+
+        <!-- Dua Metni -->
+        <TextView
+            android:id="@+id/txtDuaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Allah'ım, hakkımızda hayırlı olanı nasip eyle."
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="italic"
+            android:lineSpacingExtra="@dimen/_3sdp"
+            android:fontFamily="serif"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <!-- Yazan Kişi -->
+            <TextView
+                android:id="@+id/txtDuaAuthor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bir Kardeşiniz"
+                android:textSize="@dimen/_9ssp"
+                android:textColor="@color/text_grey"/>
+
+            <!-- Amin Butonu -->
+            <LinearLayout
+                android:id="@+id/btnAmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_icon_circle_transparent"
+                android:backgroundTint="#FFEBEE"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgAminIcon"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:src="@drawable/ic_action_amin"
+                    app:tint="#D32F2F"/>
+
+                <TextView
+                    android:id="@+id/txtAminCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amin De (0)"
+                    android:textColor="#D32F2F"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginStart="@dimen/_4sdp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

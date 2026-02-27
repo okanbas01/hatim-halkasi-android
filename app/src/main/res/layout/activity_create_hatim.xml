@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_cream"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    tools:context=".CreateHatimActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_20sdp">
+
+        <!-- Geri Butonu -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/primary_green"
+            android:layout_gravity="start"
+            android:layout_marginBottom="@dimen/_12sdp"/>
+
+        <!-- Başlık -->
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yeni Hatim Başlat"
+            android:textColor="@color/primary_green"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bir niyet belirleyip hatim halkasını kurun."
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/_11ssp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_24sdp"/>
+
+        <!-- Hatim Adı -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilHatimName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hatim Başlığı (Örn: Ramazan Hatmi)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/primary_green"
+            app:hintTextColor="@color/primary_green"
+            android:layout_marginBottom="@dimen/_12sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHatimName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:textSize="@dimen/_12ssp"
+                android:inputType="textCapSentences" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Kimin İçin / Açıklama -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kimin İçin / Niyet (Örn: Merhum Dedem için)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/primary_green"
+            app:hintTextColor="@color/primary_green"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_90sdp"
+                android:gravity="top|start"
+                android:textSize="@dimen/_12ssp"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ARKADAŞ SEÇİM KARTI -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnSelectFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="@dimen/_3sdp"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp"
+            android:layout_marginBottom="@dimen/_24sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_12sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_36sdp"
+                    android:layout_height="@dimen/_36sdp"
+                    android:src="@drawable/ic_nav_community"
+                    app:tint="@color/primary_green"
+                    android:background="@drawable/bg_icon_circle_transparent"
+                    android:backgroundTint="#E8F5E9"
+                    android:padding="@dimen/_8sdp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_12sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Halkaya Davet Et"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12ssp"/>
+
+                    <TextView
+                        android:id="@+id/txtSelectedCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Henüz kimse seçilmedi"
+                        android:textColor="@color/text_grey"
+                        android:textSize="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_2sdp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="#BDBDBD"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Oluştur Butonu -->
+        <Button
+            android:id="@+id/btnCreateAction"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:text="Hatmi Başlat"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/primary_green"
+            app:cornerRadius="@dimen/_10sdp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80sdp"/>
+
+    </LinearLayout>
+</ScrollView>

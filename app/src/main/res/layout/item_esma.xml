@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_12sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_12sdp">
+
+        <!-- Arapça İsim (Daire İçinde) -->
+        <FrameLayout
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/bg_icon_circle_transparent"
+            android:backgroundTint="#F1F8E9">
+
+            <TextView
+                android:id="@+id/txtEsmaArabic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="الله"
+                android:textSize="@dimen/_16ssp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <!-- İsim ve Anlam -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_12sdp">
+
+            <TextView
+                android:id="@+id/txtEsmaName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Er-Rahman"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/_12ssp"/>
+
+            <TextView
+                android:id="@+id/txtEsmaMeaning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anlamı buraya gelecek."
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/_10ssp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <!-- Zikir Sayısı -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_6sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zikir"
+                android:textSize="@dimen/_8ssp"
+                android:textColor="@color/accent_gold"/>
+
+            <TextView
+                android:id="@+id/txtEsmaCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textStyle="bold"
+                android:textColor="@color/accent_gold"
+                android:textSize="@dimen/_12ssp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

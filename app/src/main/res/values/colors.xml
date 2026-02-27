@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ana Proje Renkleri -->
+    <color name="primary_green">#1B5E20</color>
+    <color name="primary_green_70">#B21B5E20</color>
+    <color name="primary_green_75">#BF1B5E20</color>
+    <color name="primary_green_92">#EB1B5E20</color>
+    <color name="accent_gold">#C5A059</color>
+    <color name="secondary_cream">#F9F9F3</color>
+    <color name="bg_cream">#F9F9F3</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Metin Renkleri -->
+    <color name="text_dark">#1A1A1A</color>
+    <color name="text_grey">#757575</color>
+    <color name="text_secondary">#616161</color>
+    <color name="text_primary">#1A1A1A</color> <!-- Hata: text_primary eksikti, text_dark ile aynı atandı -->
+
+    <!-- Arka Plan ve Navigasyon Renkleri -->
+    <color name="bg_intro">#FFFFFF</color>
+    <!-- Hata: Bu renk eksikti -->
+
+    <!-- Buton ve Input Renkleri (Hata Mesajlarından) -->
+    <!-- NOT: Aşağıdaki renk kodları örnektir, kendi tasarımınıza göre değiştirin! -->
+    <color name="btn_secondary_bg">#FFFFFF</color>
+    <color name="btn_secondary_text">#1B5E20</color>
+    <color name="input_stroke">#CCCCCC</color>
+    <color name="white_card">#FFFFFF</color>
+    <color name="card_background_light">#FAFAFA</color>
+    <color name="support_brand_bg">#F6F6F6</color>
+
+    <!-- Gradient Renkleri (Hata Mesajlarından) -->
+    <!-- Altın renginin açık tonu -->
+    <!-- accent_gold ile aynı -->
+
+    <!-- Launcher Icon Arka Planı (Hata Mesajlarından) -->
+
+    <!-- Metin Renkleri -->
+    <!-- %70 Beyaz -->
+
+    <!-- Diğer UI Renkleri -->
+    <!-- %30 Beyaz -->
+
+    <!-- Zikirmatik koyu tema -->
+    <color name="zikir_bg_dark">#0D3312</color>
+    <color name="zikir_card_dark">#1B5E20</color>
+    <color name="zikir_card_dark_light">#2E7D32</color>
+    <color name="zikir_accent">#4CAF50</color>
+</resources>

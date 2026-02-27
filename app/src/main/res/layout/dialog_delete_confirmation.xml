@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <!-- Üst İkon (Kırmızı Çöp Kutusu) -->
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_delete"
+            app:tint="#D32F2F"
+            android:background="@drawable/bg_icon_circle_transparent"
+            android:backgroundTint="#FFEBEE"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Başlık -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hatmi Sil"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#D32F2F"
+            android:fontFamily="serif"
+            android:textAlignment="center"/>
+
+        <!-- Açıklama -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bu işlem geri alınamaz. Hatim ve tüm okuma kayıtları kalıcı olarak silinecektir. Emin misiniz?"
+            android:textSize="14sp"
+            android:textColor="@color/text_grey"
+            android:textAlignment="center"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp"/>
+
+        <!-- Butonlar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp">
+
+            <!-- Sil Butonu (Kırmızı) -->
+            <Button
+                android:id="@+id/btnConfirmDelete"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Evet, Sil"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#D32F2F"
+                app:cornerRadius="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Vazgeç Butonu -->
+            <Button
+                android:id="@+id/btnCancelDelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vazgeç"
+                android:textColor="@color/text_secondary"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:rippleColor="#F5F5F5"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

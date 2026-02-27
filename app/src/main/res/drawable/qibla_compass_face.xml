@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder: Replace with qibla_compass_face.webp (Kaaba-themed compass face) when ready.
+     Delete this file and add your image as res/drawable/qibla_compass_face.webp (max 1024px). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp"
+    android:height="300dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <path
+        android:fillColor="#F5F5F5"
+        android:pathData="M50,2 A48,48 0 1,1 50,98 A48,48 0 1,1 50,2"/>
+    <path
+        android:strokeWidth="2"
+        android:strokeColor="#9E9E9E"
+        android:pathData="M50,2 A48,48 0 1,1 50,98 A48,48 0 1,1 50,2"/>
+    <path
+        android:strokeWidth="1"
+        android:strokeColor="#424242"
+        android:pathData="M50,5 v10 M50,85 v10 M5,50 h10 M85,50 h10"/>
+</vector>

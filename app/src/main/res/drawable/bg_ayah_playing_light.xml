@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Okunan ayet vurgusu - mushaf estetiği, layout kayması yok -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#F1EBDD"/>
+        </shape>
+    </item>
+    <item
+        android:left="0dp"
+        android:top="0dp"
+        android:bottom="0dp"
+        android:width="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#C5A059"/>
+        </shape>
+    </item>
+</layer-list>

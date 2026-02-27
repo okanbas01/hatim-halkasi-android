@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Hatim Halkası</string>
+    <!-- Destek sayfası: Destekleyen marka web adresi. Boş bırakılırsa buton gizlenir. -->
+    <string name="support_brand_url"></string>
+    <string name="open_with">Aç</string>
+</resources>

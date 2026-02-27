@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/_12sdp">
+
+    <!-- SOL TARAFTAKİ ÇİZGİ (Timeline) -->
+    <View
+        android:id="@+id/lineTop"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/_20sdp"
+        android:background="#E0E0E0"
+        app:layout_constraintStart_toStartOf="@+id/imgStepIcon"
+        app:layout_constraintEnd_toEndOf="@+id/imgStepIcon"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- İKON -->
+    <ImageView
+        android:id="@+id/imgStepIcon"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:src="@drawable/ic_salah_position"
+        app:tint="@color/primary_green"
+        android:background="@drawable/bg_icon_circle_transparent"
+        android:backgroundTint="#E8F5E9"
+        android:padding="@dimen/_6sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lineTop"/>
+
+    <!-- ALT ÇİZGİ -->
+    <View
+        android:id="@+id/lineBottom"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#E0E0E0"
+        app:layout_constraintStart_toStartOf="@+id/imgStepIcon"
+        app:layout_constraintEnd_toEndOf="@+id/imgStepIcon"
+        app:layout_constraintTop_toBottomOf="@+id/imgStepIcon"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- KART -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/imgStepIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lineTop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp">
+
+            <!-- BAŞLIK VE OK İKONU -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtStepTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Başlık"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_green"
+                        android:textSize="@dimen/_12ssp"/>
+
+                    <TextView
+                        android:id="@+id/txtStepDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Açıklama..."
+                        android:textColor="@color/text_grey"
+                        android:textSize="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_2sdp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgExpandArrow"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:src="@drawable/ic_arrow_expand"
+                    app:tint="@color/primary_green"/>
+
+            </LinearLayout>
+
+            <!-- OKUMA ALANI -->
+            <LinearLayout
+                android:id="@+id/layoutReading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_border"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/txtStepArabic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/_16ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"/>
+
+                <TextView
+                    android:id="@+id/txtStepReading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/accent_gold"
+                    android:layout_marginTop="@dimen/_6sdp"/>
+
+                <TextView
+                    android:id="@+id/txtStepMeaning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/_9ssp"
+                    android:textColor="@color/text_grey"
+                    android:layout_marginTop="@dimen/_4sdp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

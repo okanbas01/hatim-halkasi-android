@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- SEÇİLİ DURUMDA: İkon Rengi ALTIN -->
+    <item android:color="@color/accent_gold" android:state_checked="true" />
+
+    <!-- SEÇİLİ DEĞİLKEN: İkon Rengi GRİ -->
+    <item android:color="#757575" android:state_checked="false" />
+
+</selector>

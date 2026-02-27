@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_16sdp"
+    android:background="@color/secondary_cream">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- HEDEF KARTI -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardBackgroundColor="@color/white"
+            app:cardElevation="@dimen/_4sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp">
+
+                <TextView
+                    android:text="Günlük Hedefim"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_green"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="Günde kaç CÜZ okumak istersin?"
+                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/text_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/etPageGoal"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_weight="1"
+                        android:hint="Hedef (Örn: 1)"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:textSize="@dimen/_12ssp"
+                        android:background="@drawable/bg_input_white"/>
+
+                    <Button
+                        android:id="@+id/btnSaveGoal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_40sdp"
+                        android:text="Kaydet"
+                        android:textSize="@dimen/_10ssp"
+                        android:backgroundTint="@color/accent_gold"
+                        android:layout_marginStart="@dimen/_8sdp"/>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressGoal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8sdp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:progressDrawable="@drawable/bg_green_rounded"
+                    android:progress="0"
+                    android:max="100"
+                    android:layout_marginTop="@dimen/_16sdp"/>
+
+                <TextView
+                    android:id="@+id/txtGoalStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%0 Tamamlandı"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/_4sdp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LİDERLİK TABLOSU -->
+        <TextView
+            android:text="Bu Ay En Çok Okuyanlar"
+            android:textStyle="bold"
+            android:textColor="@color/primary_green"
+            android:textSize="@dimen/_14ssp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginBottom="@dimen/_8sdp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerLeaderboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>

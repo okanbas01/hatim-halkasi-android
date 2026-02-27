@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <!-- 1. GENİŞ YEŞİL ARKA PLAN -->
+    <View
+        android:id="@+id/viewHeaderBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:background="@drawable/bg_header_curved"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- 2. MEKTUP VE BİLDİRİM NOKTASI -->
+    <FrameLayout
+        android:id="@+id/layoutHeaderInvitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_36sdp"
+        android:layout_marginEnd="@dimen/_18sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imgMail"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:src="@drawable/ic_mail"
+            android:padding="@dimen/_8sdp"
+            android:background="@drawable/bg_icon_circle_transparent"
+            android:backgroundTint="#33FFFFFF"
+            app:tint="@color/white"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/badgeHeaderInvitation"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardBackgroundColor="#D32F2F"
+            app:cardElevation="@dimen/_2sdp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <!-- 3. ORTALI BAŞLIKLAR -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/cardTabFloating"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kur'an-ı Kerim"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_22ssp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:letterSpacing="0.01"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sizin en hayırlınız, Kur'an'ı öğrenendir."
+            android:textColor="#E0F2F1"
+            android:textSize="@dimen/_11ssp"
+            android:layout_marginTop="@dimen/_4sdp"/>
+    </LinearLayout>
+
+    <!-- 4. YÜZEN TAB MENÜSÜ -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardTabFloating"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_marginHorizontal="@dimen/_24sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_22sdp"
+        app:cardElevation="@dimen/_6sdp"
+        app:strokeWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewHeaderBackground"
+        app:layout_constraintTop_toBottomOf="@+id/viewHeaderBackground">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutQuran"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_3sdp"
+            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorColor="@android:color/transparent"
+            android:background="@android:color/transparent"
+            app:tabBackground="@drawable/bg_tab_pill_selector"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/text_grey"
+            app:tabIconTint="@color/selector_tab_icon_gold"
+            app:tabMode="scrollable"
+            app:tabGravity="fill"
+            app:tabInlineLabel="true"
+            app:tabTextAppearance="@style/TabTextStyle"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 5. SAYFALAR -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerQuran"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:clipToPadding="false"
+        android:paddingBottom="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/cardTabFloating"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- 6. HATİM BAŞLAT BUTONU (aynı buton, sadece margin runtime) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnCreateHatimHub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Yeni Hatim Başlat"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_11ssp"
+        app:backgroundTint="#D4AF37"
+        app:icon="@drawable/ic_hatim_add"
+        app:iconTint="@null"
+        android:elevation="@dimen/_10sdp"
+        android:translationZ="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_18sdp"
+        android:layout_marginBottom="@dimen/_16sdp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

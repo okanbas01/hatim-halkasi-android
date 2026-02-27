@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="500dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/white">
+    <!-- height="500dp" verdik ki liste sığsın, ekran küçükse otomatik küçülür -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- BAŞLIK ALANI -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="24dp"
+            android:paddingBottom="12dp"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/bg_circle_light"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@android:drawable/ic_dialog_map"
+                    android:layout_gravity="center"
+                    app:tint="@color/primary_green"/>
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Şehir Seçiniz"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                android:fontFamily="serif"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Listeden il seçimi yapın"
+                android:textSize="12sp"
+                android:textColor="@color/text_grey"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"/>
+
+        <!-- LİSTE (ListView) -->
+        <ListView
+            android:id="@+id/listCities"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="#F5F5F5"
+            android:dividerHeight="1dp"
+            android:scrollbarThumbVertical="@color/primary_green"
+            android:scrollbars="vertical"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"/>
+
+        <!-- VAZGEÇ BUTONU -->
+        <TextView
+            android:id="@+id/btnCancelCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VAZGEÇ"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#757575"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

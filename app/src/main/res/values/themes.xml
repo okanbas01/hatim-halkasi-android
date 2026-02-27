@@ -1,0 +1,61 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ✅ DayNight yerine Light: Activity/Fragment kendiliğinden recreate olma riski düşer -->
+    <style name="Base.Theme.DenemeProjesi" parent="Theme.Material3.Light.NoActionBar">
+
+        <!-- === RENKLER === -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- ✅ Material3 state'ler bazen secondary/tertiary'den renk çekiyor -->
+        <item name="colorSecondary">@color/accent_gold</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorTertiary">@color/accent_gold</item>
+        <item name="colorOnTertiary">@color/white</item>
+
+        <!-- Arkaplanlar -->
+        <item name="android:colorBackground">@color/bg_cream</item>
+        <item name="android:windowBackground">@color/bg_cream</item>
+        <item name="colorSurface">@color/white</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/primary_green</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- ✅ Dialog'lar (Material3) -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+
+        <!-- ✅ Buton stili -->
+        <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
+
+        <!-- ✅ Opsiyonel: Android’in force dark uygulamasını engelle -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <!--
+      Splash: Arka plan beyaz. Logo SplashActivity layout'ta (bazı cihazlarda drawable arka plan gelmeyebiliyor).
+      Android 12+ için logo values-v31'de windowSplashScreenAnimatedIcon ile gösteriliyor.
+    -->
+    <style name="Theme.App.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@color/bg_intro</item>
+        <item name="android:statusBarColor">@color/primary_green</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <!-- Tablo Yazı Stili -->
+    <style name="TabTextStyle" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/text_grey</item>
+    </style>
+
+    <!-- ✅ Bottom Nav Stili: Material3 yerine MaterialComponents kullan (lila/pembe override biter) -->
+    <style name="MyBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/white</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+</resources>

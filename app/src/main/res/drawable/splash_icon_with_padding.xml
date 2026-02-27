@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ splash ikonu: Logo ortada, etrafında boşluk (240dp daireye sığsın, fazla büyük görünmesin). -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/app_logo_final"
+        android:gravity="center"
+        android:left="56dp"
+        android:top="56dp"
+        android:right="56dp"
+        android:bottom="56dp" />
+</layer-list>

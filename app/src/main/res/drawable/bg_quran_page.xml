@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 1. KAĞIT RENGİ (Zemin) - Mushaf Stili -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFF8E1"/> <!-- Saman Sarısı / Eski Kağıt Rengi -->
+        </shape>
+    </item>
+
+    <!-- 2. DIŞ ÇERÇEVE (İnce Yeşil) - Daha ince ve zarif -->
+    <item android:top="6dp" android:bottom="6dp" android:left="6dp" android:right="6dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="1.5dp" android:color="#1B5E20"/> <!-- Koyu Yeşil -->
+            <solid android:color="#00000000"/>
+            <corners android:radius="0dp"/>
+        </shape>
+    </item>
+
+    <!-- 3. İÇ ÇERÇEVE (Altın) - Mushaf stili -->
+    <item android:top="12dp" android:bottom="12dp" android:left="12dp" android:right="12dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#C5A059"/> <!-- Altın -->
+            <solid android:color="#00000000"/>
+        </shape>
+    </item>
+
+    <!-- 4. KÖŞE SÜSLEMELERİ (Daha zarif) -->
+    <!-- Sol Üst -->
+    <item android:top="12dp" android:left="12dp" android:width="16dp" android:height="16dp">
+        <rotate android:fromDegrees="45">
+            <shape android:shape="rectangle">
+                <solid android:color="#C5A059"/>
+            </shape>
+        </rotate>
+    </item>
+    <!-- Sağ Üst -->
+    <item android:top="12dp" android:right="12dp" android:width="16dp" android:height="16dp" android:gravity="end">
+        <rotate android:fromDegrees="45">
+            <shape android:shape="rectangle">
+                <solid android:color="#C5A059"/>
+            </shape>
+        </rotate>
+    </item>
+    <!-- Sol Alt -->
+    <item android:bottom="12dp" android:left="12dp" android:width="16dp" android:height="16dp" android:gravity="bottom">
+        <rotate android:fromDegrees="45">
+            <shape android:shape="rectangle">
+                <solid android:color="#C5A059"/>
+            </shape>
+        </rotate>
+    </item>
+    <!-- Sağ Alt -->
+    <item android:bottom="12dp" android:right="12dp" android:width="16dp" android:height="16dp" android:gravity="bottom|end">
+        <rotate android:fromDegrees="45">
+            <shape android:shape="rectangle">
+                <solid android:color="#C5A059"/>
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- 5. İÇERİK ALANI TEMİZLİĞİ -->
+    <item android:top="14dp" android:bottom="14dp" android:left="14dp" android:right="14dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFF8E1"/> <!-- Zeminle aynı renk -->
+        </shape>
+    </item>
+
+</layer-list>

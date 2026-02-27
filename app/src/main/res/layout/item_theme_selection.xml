@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardThemeItem"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="12dp"
+    app:strokeWidth="0dp"
+    app:strokeColor="#C5A059"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Resim -->
+    <ImageView
+        android:id="@+id/imgThemeThumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_header_curved" />
+
+    <!-- SEÇİLİ OLDUĞUNDA GÖRÜNEN KATMAN -->
+    <FrameLayout
+        android:id="@+id/layoutSelectedState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#60000000"
+        android:visibility="gone"> <!-- Varsayılan GİZLİ -->
+
+        <!-- Yeşil Daire içinde Tik -->
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check_white"
+            android:background="@drawable/bg_circle_green_check"
+            android:padding="6dp"/>
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

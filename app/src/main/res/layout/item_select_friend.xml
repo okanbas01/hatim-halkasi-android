@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_12sdp"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Profil Çerçevesi -->
+    <FrameLayout
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/bg_icon_circle_transparent"
+        android:backgroundTint="#E0F2F1">
+
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:tint="@color/primary_green"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <!-- İsim Bilgileri -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kullanıcı Adı"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:textSize="@dimen/_12ssp"/>
+
+        <TextView
+            android:id="@+id/txtUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@kullanici"
+            android:textColor="#757575"
+            android:textSize="@dimen/_10ssp"/>
+    </LinearLayout>
+
+    <!-- Seçim Kutusu (DÜZELTİLDİ) -->
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:buttonTint="@color/primary_green"
+        android:minWidth="0dp"
+        android:minHeight="0dp"/>
+
+</LinearLayout>

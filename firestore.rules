@@ -1,0 +1,22 @@
+rules_version = '2';
+// Firebase Console > Firestore Database > Rules bölümüne yapıştırıp yayınlayabilirsiniz.
+// 24 saat kontrolü uygulama tarafında yapılıyor; kurallar sadece yapı ve yetkiyi doğrular.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Geri bildirimler: sadece kendi userId ile yazabilir, message 10-200 karakter
+    match /feedbacks/{docId} {
+      allow read: if false;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 10
+        && request.resource.data.message.size() <= 200
+        && request.resource.data.keys().hasAll(['message', 'createdAt', 'userId']);
+      allow update, delete: if false;
+    }
+
+    // Diğer koleksiyonlarınız aşağıda kalabilir...
+  }
+}

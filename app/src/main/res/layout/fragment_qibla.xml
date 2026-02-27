@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutQiblaRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_cream">
+
+    <!-- GERİ BUTONU – üst sola, biraz aşağıda (status bar / güvenli alan altı) -->
+    <LinearLayout
+        android:id="@+id/btnBackQibla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginTop="32dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/text_dark"
+            android:contentDescription="Geri"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geri"
+            android:textColor="@color/text_dark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="6dp"/>
+    </LinearLayout>
+
+    <!-- BAŞLIK BLOĞU – Kıbleyi Bul, açıklama, kıble açısı (ortada, ekrana göre ölçeklenir) -->
+    <LinearLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBackQibla">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kıbleyi Bul"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_green"/>
+
+        <TextView
+            android:id="@+id/txtStateMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yeşil Ok'u Kabe'ye hizalayın"
+            android:textColor="@color/text_grey"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/txtDegree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:textSize="14sp"
+            android:textColor="@color/accent_gold"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+
+    <!-- PUSULA ALANI – ekran boyutuna göre kare, max 280dp, ortada; donanım katmanı ile akıcı -->
+    <FrameLayout
+        android:id="@+id/compassContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/secondary_cream"
+        android:layerType="hardware"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_max="280dp"
+        app:layout_constraintHeight_max="280dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp">
+
+        <!-- Statik pusula kadranı (PNG) – scaleType ile tek ölçek, ANR yok -->
+        <ImageView
+            android:id="@+id/imgCompassDial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/pusula"
+            android:background="@color/secondary_cream"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:contentDescription="Pusula kadranı"/>
+
+        <!-- Kıble oku – sadece setRotation ile döner -->
+        <ImageView
+            android:id="@+id/imgQiblaArrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_qibla_arrow"
+            android:scaleType="centerInside"
+            android:padding="16dp"
+            android:contentDescription="Kıble oku"/>
+
+    </FrameLayout>
+
+    <!-- BAŞARI EFEKTİ -->
+    <View
+        android:id="@+id/viewSuccessOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4D4CAF50"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

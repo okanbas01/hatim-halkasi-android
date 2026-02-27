@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="@android:color/transparent">
+
+    <!-- ARAPÇA METİN - Mushaf Stili -->
+    <TextView
+        android:id="@+id/txtArabic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="بِسْمِ ٱللَّهِ"
+        android:textColor="#1A1A1A"
+        android:textSize="28sp"
+        android:textStyle="normal"
+        android:gravity="start|center_vertical"
+        android:textAlignment="textStart"
+        android:lineSpacingMultiplier="1.5"
+        android:lineSpacingExtra="6dp"
+        android:includeFontPadding="false"
+        android:letterSpacing="0.01"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
+
+    <!-- AYET NUMARASI - Mushaf Stili -->
+    <LinearLayout
+        android:id="@+id/layoutAyahNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_gravity="end"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone">
+
+        <!-- Ayet Numarası Çemberi -->
+        <TextView
+            android:id="@+id/txtAyahNumber"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="14sp"
+            android:textColor="#1B5E20"
+            android:textStyle="bold"
+            android:background="@drawable/bg_ayah_number"
+            android:fontFamily="sans-serif-medium"/>
+
+    </LinearLayout>
+
+    <!-- SURE BİLGİSİ - Sadece Meal/Okunuş Modunda -->
+    <TextView
+        android:id="@+id/txtSurahInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fatiha - 1"
+        android:textSize="12sp"
+        android:textColor="#8D6E63"
+        android:textStyle="normal"
+        android:layout_gravity="end"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="gone"
+        android:fontFamily="sans-serif"/>
+
+</LinearLayout>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    tools:context=".RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingEnd="@dimen/_20sdp"
+        android:paddingTop="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_50sdp"
+        android:clipToPadding="false">
+
+        <!-- Header: Geri Butonu -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/primary_green"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginStart="@dimen/_minus8sdp"
+            android:contentDescription="Geri Dön"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- LOGO -->
+        <ImageView
+            android:id="@+id/imgRegisterLogo"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@drawable/app_logo_final"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_10sdp" />
+
+        <!-- Başlık -->
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aramıza Katıl"
+            android:textColor="@color/primary_green"
+            android:textSize="@dimen/_24ssp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_16sdp"/>
+
+        <TextView
+            android:id="@+id/txtSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hatim halkasına katılmak için kaydolun."
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/_12ssp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_24sdp"/>
+
+        <!-- 1. İsim Soyisim -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adınız Soyadınız"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_6sdp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            android:layout_marginBottom="@dimen/_12sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/bg_input_white"
+                android:hint="Adınızı girin"
+                android:textColorHint="#9CA3AF"
+                android:inputType="textCapWords"
+                android:textSize="@dimen/_12ssp"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 2. Kullanıcı Adı -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kullanıcı Adı"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_6sdp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            android:layout_marginBottom="@dimen/_12sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUsername"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/bg_input_white"
+                android:hint="kullanici_adi"
+                android:textColorHint="#9CA3AF"
+                android:inputType="textNoSuggestions"
+                android:textSize="@dimen/_12ssp"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 3. E-Posta -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-posta Adresiniz"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_6sdp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            android:layout_marginBottom="@dimen/_12sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/bg_input_white"
+                android:hint="ornek@email.com"
+                android:textColorHint="#9CA3AF"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/_12ssp"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 4. Şifre -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Şifre"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_6sdp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:passwordToggleEnabled="true"
+            android:layout_marginBottom="@dimen/_12sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/bg_input_white"
+                android:hint="En az 8 karakter"
+                android:textColorHint="#9CA3AF"
+                android:inputType="textPassword"
+                android:textSize="@dimen/_12ssp"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 5. Şifre Tekrar -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Şifre Tekrar"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_6sdp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:passwordToggleEnabled="true"
+            android:layout_marginBottom="@dimen/_16sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/bg_input_white"
+                android:hint="Şifrenizi doğrulayın"
+                android:textColorHint="#9CA3AF"
+                android:inputType="textPassword"
+                android:textSize="@dimen/_12ssp"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_12sdp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- KVKK -->
+        <LinearLayout
+            android:id="@+id/layoutKvkk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/_24sdp">
+
+            <CheckBox
+                android:id="@+id/cbKvkk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/selector_checkbox_custom"
+                android:minWidth="0dp"
+                android:padding="@dimen/_4sdp"/>
+
+            <TextView
+                android:id="@+id/txtKvkk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kullanıcı Sözleşmesi ve Gizlilik Politikasını okudum, kabul ediyorum."
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/_11ssp"
+                android:layout_marginStart="@dimen/_8sdp"/>
+        </LinearLayout>
+
+        <!-- Kayıt Ol Butonu -->
+        <Button
+            android:id="@+id/btnRegisterAction"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:text="Kayıt Ol"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_btn_primary"
+            app:backgroundTint="@null"
+            android:layout_marginBottom="@dimen/_18sdp"/>
+
+        <!-- Giriş Yap Link -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zaten hesabın var mı?"
+                android:textSize="@dimen/_11ssp"
+                android:textColor="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/txtGoToLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Giriş Yap"
+                android:textStyle="bold"
+                android:textSize="@dimen/_11ssp"
+                android:textColor="@color/primary_green"
+                android:padding="@dimen/_6sdp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
