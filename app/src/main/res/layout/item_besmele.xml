@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
-        android:textColor="#1A1A1A"
+        android:textColor="@color/text_dark"
         android:textSize="32sp"
         android:textStyle="normal"
         android:gravity="center"
@@ -32,7 +32,7 @@
     <View
         android:layout_width="120dp"
         android:layout_height="1dp"
-        android:background="#C5A059"
+        android:background="@color/accent_gold"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"/>

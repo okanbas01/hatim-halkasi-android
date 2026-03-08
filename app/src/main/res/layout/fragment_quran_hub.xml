@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@color/bg_cream">
 
     <!-- 1. GENİŞ YEŞİL ARKA PLAN -->
     <View
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sizin en hayırlınız, Kur'an'ı öğrenendir."
-            android:textColor="#E0F2F1"
+            android:textColor="@color/header_subtitle"
             android:textSize="@dimen/_11ssp"
             android:layout_marginTop="@dimen/_4sdp"/>
     </LinearLayout>
@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp"
         android:layout_marginHorizontal="@dimen/_24sdp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/white_card"
         app:cardCornerRadius="@dimen/_22sdp"
         app:cardElevation="@dimen/_6sdp"
         app:strokeWidth="0dp"

@@ -95,12 +95,15 @@ class ReadJuzActivity : AppCompatActivity() {
     private var currentHatimId: String? = null
     private val PREFS_NAME = "ReadingSettings"
     private var isFromYasinTab: Boolean = false
-
-
+    private var completedReadingThisSession: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_read_juz)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { navigateBack() }
+        })
 
         val btnPrev = findViewById<ImageView>(R.id.btnPrev)
         val btnNext = findViewById<ImageView>(R.id.btnNext)
@@ -157,7 +160,7 @@ class ReadJuzActivity : AppCompatActivity() {
 
         // Recycler – stable ID + payload ile highlight kayması önlenir
         recyclerAyahs.layoutManager = LinearLayoutManager(this)
-        recyclerAyahs.setHasFixedSize(false)
+        recyclerAyahs.setHasFixedSize(true)
         (recyclerAyahs.itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = false
         ayahList = ArrayList()
         ayahAdapter = AyahAdapter(ayahList)
@@ -316,8 +319,12 @@ class ReadJuzActivity : AppCompatActivity() {
         }
     }
     private fun navigateBack() {
-        // Sadece finish: önceki ekran zaten stack'te, yeni activity açılmadığı için beyaz overlay çıkmaz
-        finish()
+        if (completedReadingThisSession) {
+            val screenContext = if (isFromYasinTab) com.example.sharedkhatm.ads.AdScreenContext.SENSITIVE else com.example.sharedkhatm.ads.AdScreenContext.NORMAL
+            (application as? com.example.sharedkhatm.MyApplication)?.interstitialManager?.maybeShowInterstitial(this, screenContext) { finish() }
+        } else {
+            finish()
+        }
     }
 
     private fun getApiCall(service: QuranApiService, edition: String): Call<QuranApiResponse> {
@@ -368,58 +375,44 @@ class ReadJuzActivity : AppCompatActivity() {
         })
     }
 
+    /** ANR önleme: Ağır işi bir sonraki mesaj döngüsüne erteleyerek ana iş parçacığının hemen dönmesini sağlar. */
     private fun playAudio(index: Int) {
-
         if (audioUrls.isEmpty()) {
             txtPlayerStatus.text = "Ses bulunamadı"
             return
         }
-
         if (index < 0 || index >= audioUrls.size) {
             stopAudio()
             return
         }
-
-        // 🔴 ÖNCE ESKİ SEEK UPDATE DURDUR
         updateRunnable?.let { handler.removeCallbacks(it) }
-
-        // Buffering timeout'u iptal et
         cancelBufferingTimeout()
 
-        currentAudioIndex = index
-        ayahAdapter.updatePlayingIndex(index)
-        scrollToPlayingAyah(index)
-
         val url = audioUrls[index] ?: return
-
+        currentAudioIndex = index
         txtPlayerStatus.text = "Yükleniyor..."
 
-        // Player'ın durumunu kontrol et ve gerekirse reset et
-        player?.let { exoPlayer ->
-            val currentState = exoPlayer.playbackState
-            // Eğer player stuck durumdaysa reset et
-            if (currentState == Player.STATE_BUFFERING && isBufferingTimeoutActive) {
-                resetPlayer()
+        handler.post {
+            if (!isFinishing && !isDestroyed) {
+                ayahAdapter.updatePlayingIndex(index)
+                scrollToPlayingAyah(index)
+                player?.let { exoPlayer ->
+                    if (exoPlayer.playbackState == Player.STATE_BUFFERING && isBufferingTimeoutActive) {
+                        resetPlayer()
+                    }
+                }
+                player?.apply {
+                    stop()
+                    clearMediaItems()
+                    setMediaItem(MediaItem.fromUri(url))
+                    playbackParameters = PlaybackParameters(currentPlaybackSpeed)
+                    prepare()
+                    playWhenReady = false
+                }
+                isAudioPlaying = true
+                btnPlayPause.setImageResource(android.R.drawable.ic_media_pause)
             }
         }
-
-        player?.apply {
-            stop()
-            clearMediaItems()
-
-            val mediaItem = MediaItem.fromUri(url)
-            setMediaItem(mediaItem)
-
-            playbackParameters = PlaybackParameters(currentPlaybackSpeed)
-
-            prepare()
-            // playWhenReady'i STATE_READY geldiğinde set edeceğiz
-            // Bu cold-start problemlerini önler
-            playWhenReady = false
-        }
-
-        isAudioPlaying = true
-        btnPlayPause.setImageResource(android.R.drawable.ic_media_pause)
     }
 
     /** Okunan ayeti görünür yapar; yumuşak scroll, üstte boşluk bırakır (kayma hissini azaltır) */
@@ -496,14 +489,6 @@ class ReadJuzActivity : AppCompatActivity() {
         ayahAdapter.updatePlayingIndex(-1)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // Tüm callback'leri temizle
-        cancelBufferingTimeout()
-        updateRunnable?.let { handler.removeCallbacks(it) }
-        player?.release()
-        player = null
-    }
     private fun showSpeedDialog() {
 
         val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
@@ -568,7 +553,9 @@ class ReadJuzActivity : AppCompatActivity() {
     private fun loadSettings() {
         val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         textSize = prefs.getFloat("textSize", 26f)
-        isNightMode = prefs.getBoolean("nightMode", false)
+        // Koyu temadayken açıldığında varsayılan koyu; kullanıcı isterse açık temaya alabilir
+        val defaultNight = ThemeManager.isDarkMode(this)
+        isNightMode = prefs.getBoolean("nightMode", defaultNight)
         currentMode = prefs.getInt("currentMode", 0)
         updateLanguageUI()
         applySettings()
@@ -609,7 +596,8 @@ class ReadJuzActivity : AppCompatActivity() {
                 .setImageResource(R.drawable.ic_read_sun)
         } else {
             mainLayout.setBackgroundResource(R.color.secondary_cream)
-            topBar.setBackgroundResource(R.color.primary_green)
+            // Diğer sayfalardaki gibi orijinal koyu yeşil (header_green)
+            topBar.setBackgroundResource(R.color.header_green)
             txtTitle.setTextColor(Color.WHITE)
             recyclerAyahs.setBackgroundResource(R.drawable.bg_quran_page)
             findViewById<ImageView>(R.id.btnToggleTheme)
@@ -783,10 +771,21 @@ class ReadJuzActivity : AppCompatActivity() {
                 
                 // Yeni rozet kazanıldı mı kontrol et ve göster
                 checkNewBadges()
+                if (ayahList.isNotEmpty() && ayahIndex >= ayahList.size - 1) {
+                    completedReadingThisSession = true
+                }
             }
         }
     }
-    
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelBufferingTimeout()
+        updateRunnable?.let { handler.removeCallbacks(it) }
+        player?.release()
+        player = null
+    }
+
     /** Yeni kazanılan rozetleri kontrol et ve göster - performans odaklı */
     private fun checkNewBadges() {
         // Arka planda hafif kontrol - 300ms delay ile (performans için)

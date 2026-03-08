@@ -7,13 +7,20 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import java.util.Calendar
+import android.text.format.DateFormat
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -176,6 +183,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         if (::badgeAdapter.isInitialized) updateBadges()
     }
 
+    /** Profil ile aynı kaynak (parts): toplam ve bu ayki cüz sayısını users dokümanına yazar. Hedefler listesi bu veriyi kullanır. */
+    private fun syncUserReadCountsToFirestore(userId: String, totalReadCount: Int, currentMonthReadCount: Int) {
+        val currentMonthKey = DateFormat.format("yyyy-MM", java.util.Date()).toString()
+        val updates = mutableMapOf<String, Any>(
+            "totalReadCount" to totalReadCount,
+            "monthlyReadCount" to currentMonthReadCount
+        )
+        if (currentMonthReadCount > 0) updates["lastActiveMonth"] = currentMonthKey
+        db.collection("users").document(userId).update(updates).addOnFailureListener { /* sessiz; profil sayısı zaten doğru */ }
+    }
+
     private fun calculateStats(userId: String) {
         txtTotalHatims.text = "..."
         txtTotalJuzs.text = "..."
@@ -184,9 +202,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             .whereArrayContains("participants", userId)
             .get()
             .addOnSuccessListener { hatimDocuments ->
-
+                if (!isAdded) return@addOnSuccessListener
+                // Tamamlanan hatim sayısı (hafif)
                 var completedHatimCount = 0
                 for (doc in hatimDocuments) {
+                    val createdBy = doc.getString("createdBy")
+                    if (createdBy != userId) continue
                     val completedParts = doc.getLong("completedParts")?.toInt() ?: 0
                     val totalParts = doc.getLong("totalParts")?.toInt() ?: 30
                     if (completedParts >= totalParts) completedHatimCount++
@@ -195,35 +216,56 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                 val tasks = mutableListOf<Task<QuerySnapshot>>()
                 for (doc in hatimDocuments) {
-                    val query = doc.reference.collection("parts")
-                        .whereEqualTo("ownerId", userId)
-                        .get()
-                    tasks.add(query)
+                    tasks.add(doc.reference.collection("parts").whereEqualTo("ownerId", userId).get())
                 }
 
                 if (tasks.isNotEmpty()) {
                     Tasks.whenAllSuccess<QuerySnapshot>(tasks).addOnSuccessListener { results ->
-                        var totalReadJuzCount = 0
-                        for (snapshot in results) {
-                            for (partDoc in snapshot.documents) {
-                                val rawStatus = partDoc.get("status")
-                                val statusInt = when (rawStatus) {
-                                    is Number -> rawStatus.toInt()
-                                    is String -> rawStatus.toIntOrNull() ?: 0
-                                    else -> 0
+                        if (!isAdded) return@addOnSuccessListener
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            val (total, monthCount) = withContext(Dispatchers.Default) {
+                                var totalReadJuzCount = 0
+                                var currentMonthReadCount = 0
+                                val cal = Calendar.getInstance()
+                                val currentYear = cal.get(Calendar.YEAR)
+                                val currentMonth = cal.get(Calendar.MONTH)
+                                for (snapshot in results) {
+                                    for (partDoc in snapshot.documents) {
+                                        val rawStatus = partDoc.get("status")
+                                        val statusInt = when (rawStatus) {
+                                            is Number -> rawStatus.toInt()
+                                            is String -> rawStatus.toIntOrNull() ?: 0
+                                            else -> 0
+                                        }
+                                        if (statusInt >= 2) {
+                                            totalReadJuzCount++
+                                            val updatedAt = partDoc.get("updatedAt")
+                                            if (updatedAt is Timestamp) {
+                                                val d = updatedAt.toDate()
+                                                cal.time = d
+                                                if (cal.get(Calendar.YEAR) == currentYear && cal.get(Calendar.MONTH) == currentMonth) {
+                                                    currentMonthReadCount++
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                if (statusInt >= 2) totalReadJuzCount++
+                                totalReadJuzCount to currentMonthReadCount
                             }
+                            if (!isAdded) return@launch
+                            txtTotalJuzs.text = total.toString()
+                            saveStatsAndRefreshBadges(userId, completedHatimCount, total)
+                            syncUserReadCountsToFirestore(userId, total, monthCount)
                         }
-                        txtTotalJuzs.text = totalReadJuzCount.toString()
-                        saveStatsAndRefreshBadges(userId, completedHatimCount, totalReadJuzCount)
                     }
                 } else {
                     txtTotalJuzs.text = "0"
                     saveStatsAndRefreshBadges(userId, completedHatimCount, 0)
+                    syncUserReadCountsToFirestore(userId, 0, 0)
                 }
             }
             .addOnFailureListener {
+                if (!isAdded) return@addOnFailureListener
                 txtTotalHatims.text = "0"
                 txtTotalJuzs.text = "0"
                 saveStatsAndRefreshBadges(userId, 0, 0)

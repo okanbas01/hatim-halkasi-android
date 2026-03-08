@@ -9,7 +9,7 @@
     android:layout_marginVertical="@dimen/_6sdp"
     app:cardCornerRadius="@dimen/_12sdp"
     app:cardElevation="@dimen/_3sdp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/white_card"
     app:strokeColor="#F0F0F0"
     app:strokeWidth="1dp">
 

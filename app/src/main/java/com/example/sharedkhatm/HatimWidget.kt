@@ -41,7 +41,7 @@ class HatimWidget : AppWidgetProvider() {
             views.setTextViewText(R.id.widgetNextName, nextName)
             views.setTextViewText(R.id.widgetNextTime, nextTime)
             views.setTextViewText(R.id.widgetCountDown, remainingText)
-            views.setTextViewText(R.id.widgetHatimStatus, lastReadName)
+            views.setTextViewText(R.id.widgetHatimStatus, lastReadName ?: "Henüz Yok")
 
             // DİKKAT: İkon boyama kodu (setColorFilter) TAMAMEN SİLİNDİ.
             // Artık ikon XML'deki orijinal haliyle (renkli) görünecek.

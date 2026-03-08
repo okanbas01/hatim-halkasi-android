@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8F9FA"
+    android:background="@color/bg_cream"
     android:padding="@dimen/_16sdp">
 
     <!-- ARAMA ÇUBUĞU -->
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_20sdp"
         app:cardElevation="@dimen/_2sdp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/white_card"
         android:layout_marginBottom="@dimen/_12sdp">
 
         <androidx.appcompat.widget.SearchView
@@ -32,8 +32,17 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSurahs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/_20sdp"/>
+
+    <!-- Banner: Sure listesi en altında -->
+    <include
+        android:id="@+id/includeAdBanner"
+        layout="@layout/ad_banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"/>
 
 </LinearLayout>

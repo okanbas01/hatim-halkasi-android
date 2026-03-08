@@ -99,7 +99,7 @@
                 app:cardCornerRadius="999dp"
                 app:cardElevation="@dimen/_10sdp"
                 app:strokeWidth="0dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/white_card"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

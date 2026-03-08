@@ -3,6 +3,7 @@ package com.example.sharedkhatm
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -29,6 +30,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        // Banner sadece ana sayfa (Dashboard) en altta; bu ekranda banner yok.
+        val adContainer = view.findViewById<FrameLayout>(R.id.adBannerContainer)
+        adContainer?.visibility = View.GONE
+
         // ✅ fragment_home.xml içinde OLAN view'lar
         txtEmptyState = view.findViewById(R.id.txtEmptyState)
         txtHatimCount = view.findViewById(R.id.txtHatimCount)
@@ -52,6 +57,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // Yeni Hatim Başlat butonu activity_home.xml (FAB) üzerinden yönetilecek.
 
         getHatimData()
+    }
+
+    override fun onDestroyView() {
+        if (::recyclerView.isInitialized) recyclerView.adapter = null
+        super.onDestroyView()
     }
 
     override fun onResume() {

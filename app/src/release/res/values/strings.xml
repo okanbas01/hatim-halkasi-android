@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RELEASE: Gerçek AdMob reklam birim ID'leri. Google test yayıncı ID burada OLMAMALI. -->
+<resources>
+    <string name="admob_banner_id">ca-app-pub-7124520199580159/9309434522</string>
+    <string name="admob_rewarded_id">ca-app-pub-7124520199580159/6579329401</string>
+    <!-- AdMob konsolundan Interstitial ve App Open birim ID'lerinizi oluşturup aşağıyı güncelleyin. -->
+    <string name="admob_interstitial_id">ca-app-pub-7124520199580159/9309434523</string>
+    <string name="admob_app_open_id">ca-app-pub-7124520199580159/9309434524</string>
+</resources>

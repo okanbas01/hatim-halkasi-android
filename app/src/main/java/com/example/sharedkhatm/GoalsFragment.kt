@@ -9,11 +9,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GoalsFragment : Fragment(R.layout.fragment_goals) {
 
@@ -79,7 +82,8 @@ class GoalsFragment : Fragment(R.layout.fragment_goals) {
 
         // --- LİDERLİK TABLOSU ---
         val recyclerLeader = view.findViewById<RecyclerView>(R.id.recyclerLeaderboard)
-        recyclerLeader.layoutManager = LinearLayoutManager(context)
+        val ctx = context ?: return
+        recyclerLeader.layoutManager = LinearLayoutManager(ctx)
         leaderboardAdapter = LeaderboardAdapter(leaderList)
         recyclerLeader.adapter = leaderboardAdapter
 
@@ -89,11 +93,14 @@ class GoalsFragment : Fragment(R.layout.fragment_goals) {
     override fun onResume() {
         super.onResume()
         // Geri gelince sadece barı güncelle, inputa dokunma
+        if (!isAdded) return
         view?.let {
             val etGoal = it.findViewById<EditText>(R.id.etPageGoal)
             val progressGoal = it.findViewById<ProgressBar>(R.id.progressGoal)
             val txtGoalStatus = it.findViewById<TextView>(R.id.txtGoalStatus)
-            updateProgressUI(etGoal, progressGoal, txtGoalStatus, fillInput = false)
+            if (etGoal != null && progressGoal != null && txtGoalStatus != null) {
+                updateProgressUI(etGoal, progressGoal, txtGoalStatus, fillInput = false)
+            }
         }
     }
 
@@ -103,8 +110,12 @@ class GoalsFragment : Fragment(R.layout.fragment_goals) {
         txtStatus: TextView,
         fillInput: Boolean
     ) {
-        val userId = auth.currentUser?.uid ?: return
-        val prefs = requireContext().getSharedPreferences("UserGoal_$userId", Context.MODE_PRIVATE)
+        val userId = auth.currentUser?.uid ?: run {
+            txtStatus.text = "Hedef için giriş yapın."
+            return
+        }
+        val ctx = context ?: return
+        val prefs = ctx.getSharedPreferences("UserGoal_$userId", Context.MODE_PRIVATE)
 
         // Tarih kontrolü (gün değiştiyse sıfırla)
         val today = android.text.format.DateFormat.format("yyyyMMdd", java.util.Date()).toString()
@@ -138,24 +149,35 @@ class GoalsFragment : Fragment(R.layout.fragment_goals) {
             txtStatus.text = "Henüz hedef belirlemediniz."
 
             // İstersen hedef yoksa goal alarmını iptal et (güvenli)
-            DailyAlarmScheduler.cancelGoal(requireContext())
+            DailyAlarmScheduler.cancelGoal(ctx)
         }
     }
 
+    /** Bu ay en çok okuyanlar. Sıralama/işleme arka planda (düşük model telefonlarda ANR önlemi). */
     private fun loadLeaderboard() {
+        val currentMonthKey = android.text.format.DateFormat.format("yyyy-MM", java.util.Date()).toString()
         db.collection("users")
-            .orderBy("monthlyReadCount", Query.Direction.DESCENDING)
-            .limit(10)
+            .whereEqualTo("lastActiveMonth", currentMonthKey)
             .get()
             .addOnSuccessListener { documents ->
-                leaderList.clear()
-                for (doc in documents) {
-                    val name = doc.getString("name")
-                    val count = doc.getLong("monthlyReadCount") ?: 0L
-                    if (name != null && count > 0) {
-                        leaderList.add(LeaderUser(maskName(name), count))
+                if (!isAdded) return@addOnSuccessListener
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val tempList = withContext(Dispatchers.Default) {
+                        documents.documents.mapNotNull { doc ->
+                            val name = doc.getString("name")
+                            val count = doc.getLong("monthlyReadCount") ?: 0L
+                            if (name != null && count > 0) LeaderUser(maskName(name), count) else null
+                        }.sortedByDescending { it.count }.take(10)
                     }
+                    if (!isAdded) return@launch
+                    leaderList.clear()
+                    leaderList.addAll(tempList)
+                    leaderboardAdapter.notifyDataSetChanged()
                 }
+            }
+            .addOnFailureListener {
+                if (!isAdded) return@addOnFailureListener
+                leaderList.clear()
                 leaderboardAdapter.notifyDataSetChanged()
             }
     }

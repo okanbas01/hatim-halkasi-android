@@ -1,7 +1,7 @@
 package com.example.sharedkhatm
 
-import android.graphics.Color
 import android.view.LayoutInflater
+import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -42,18 +42,20 @@ class DuaAdapter(
         val likes = dua.likedBy ?: emptyList()
         val isLiked = likes.contains(currentUserId)
 
+        val ctx = holder.itemView.context
         if (isLiked) {
-            // ... (Kırmızı Kalp kodları aynen kalsın) ...
+            // Beğenilmiş: sadece kalp kırmızı, yanındaki yazı gri (okunabilir)
             holder.imgAmin.setImageResource(R.drawable.ic_heart_filled)
-            holder.imgAmin.clearColorFilter()
-            holder.txtCount.setTextColor(Color.parseColor("#757575"))
+            holder.imgAmin.setColorFilter(ContextCompat.getColor(ctx, R.color.amin_liked))
+            holder.txtCount.setTextColor(ContextCompat.getColor(ctx, R.color.text_grey))
             holder.btnAmin.isEnabled = false
             holder.btnAmin.alpha = 0.6f
         } else {
-            // ... (Yeşil El kodları aynen kalsın) ...
+            // Beğenilmemiş: yeşil el/amin ikonu
             holder.imgAmin.setImageResource(R.drawable.ic_action_amin)
-            holder.imgAmin.setColorFilter(Color.parseColor("#1B5E20"))
-            holder.txtCount.setTextColor(Color.parseColor("#1B5E20"))
+            val greenColor = ContextCompat.getColor(ctx, R.color.amin_btn_text)
+            holder.imgAmin.setColorFilter(greenColor)
+            holder.txtCount.setTextColor(greenColor)
             holder.btnAmin.isEnabled = true
             holder.btnAmin.alpha = 1.0f
         }

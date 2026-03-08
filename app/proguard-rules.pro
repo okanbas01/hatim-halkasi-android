@@ -33,5 +33,24 @@
 # Senin Modellerin (Paket ismin com.example.sharedkhatm ise)
 -keep class com.example.sharedkhatm.** { *; }
 
+# Glide (R8 release)
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class com.bumptech.glide.** { *; }
+-dontwarn com.bumptech.glide.**
+
+# Firebase (ek)
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# Lottie
+-keep class com.airbnb.android.lottie.** { *; }
+
 -keep class com.google.ai.client.generativeai.** { *; }
 -dontwarn com.google.ai.client.generativeai.**
+
+# AdMob / Play Services Ads (R8 release) - reflection ve policy güvenliği
+-keep class com.google.android.gms.ads.** { *; }
+-keepclassmembers class com.google.android.gms.ads.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn com.google.android.gms.ads.**

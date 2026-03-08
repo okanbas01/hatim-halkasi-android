@@ -4,7 +4,7 @@
     android:id="@+id/rootFridayMessage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9F9F3"
+    android:background="@color/bg_cream"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
@@ -14,7 +14,7 @@
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#1B5E20"
+        android:background="@color/header_green"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -24,7 +24,7 @@
             android:layout_marginStart="8dp"
             android:padding="12dp"
             android:src="@drawable/abc_ic_ab_back_material"
-            app:tint="#FFFFFF"
+            app:tint="@color/white"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -76,7 +76,7 @@
                     android:id="@+id/layoutExportArea"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#1B5E20">
+                    android:background="@color/header_green">
 
                     <ImageView
                         android:id="@+id/imgBackgroundPreview"
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:indeterminate="true"
-                        android:indeterminateTint="#C5A059"
+                        android:indeterminateTint="@color/accent_gold"
                         android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hatim Halkası"
-                            android:textColor="#C5A059"
+                            android:textColor="@color/accent_gold"
                             android:textSize="9sp"
                             android:textStyle="bold"
                             android:shadowColor="#000000"
@@ -165,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Hazır Mesaj Seç veya Yaz"
-                    android:textColor="#C5A059"
+                    android:textColor="@color/accent_gold"
                     android:textStyle="bold" />
 
                 <HorizontalScrollView
@@ -185,8 +185,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hayırlı Cumalar"
-                            android:textColor="#1B5E20"
-                            app:strokeColor="#1B5E20"
+                            android:textColor="@color/primary_green"
+                            app:strokeColor="@color/primary_green"
                             app:cornerRadius="20dp"
                             android:layout_marginEnd="8dp"/>
 
@@ -196,8 +196,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Kandiliniz Mübarek Olsun"
-                            android:textColor="#1B5E20"
-                            app:strokeColor="#1B5E20"
+                            android:textColor="@color/primary_green"
+                            app:strokeColor="@color/primary_green"
                             app:cornerRadius="20dp"
                             android:layout_marginEnd="8dp"/>
 
@@ -207,9 +207,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dua ile..."
-                            android:textColor="#1B5E20"
+                            android:textColor="@color/primary_green"
                             app:cornerRadius="20dp"
-                            app:strokeColor="#1B5E20"/>
+                            app:strokeColor="@color/primary_green"/>
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -221,8 +221,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="Kendi mesajını yaz..."
-                    app:boxStrokeColor="#1B5E20"
-                    app:hintTextColor="#1B5E20"
+                    app:boxStrokeColor="@color/primary_green"
+                    app:hintTextColor="@color/primary_green"
                     app:errorTextColor="#D32F2F"
                     app:boxCornerRadiusTopStart="24dp"
                     app:boxCornerRadiusTopEnd="24dp"
@@ -235,7 +235,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine|textCapSentences"
                         android:maxLines="3"
-                        android:textColor="#000000"
+                        android:textColor="@color/text_dark"
                         android:imeOptions="actionDone"
                         android:importantForAutofill="no" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -245,7 +245,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="Tema Seç (Kaydır)"
-                    android:textColor="#1B5E20"
+                    android:textColor="@color/primary_green"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -261,15 +261,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="40dp"
-                    android:backgroundTint="#C5A059"
+                    android:backgroundTint="@color/accent_gold"
                     android:text="Durum Paylaş"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:cornerRadius="30dp"
                     app:icon="@android:drawable/ic_menu_share"
                     app:iconGravity="textStart"
-                    app:iconTint="#FFFFFF"/>
+                    app:iconTint="@color/white"/>
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

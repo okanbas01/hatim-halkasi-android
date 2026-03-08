@@ -50,8 +50,8 @@ class PrayerTimesRefreshWorker(
 
             val response = service.getTimings(lat = lat, long = lon, tune = tuneStr).execute()
             if (!response.isSuccessful || response.body() == null) {
-                Log.w("PrayerWorker", "API failed: ${response.code()}")
-                return Result.retry()
+                Log.w("PrayerWorker", "API failed: ${response.code()} -> skip retry (next run in 24h)")
+                return Result.success()
             }
 
             val t = response.body()!!.data.timings
@@ -86,7 +86,7 @@ class PrayerTimesRefreshWorker(
 
         } catch (e: Exception) {
             Log.e("PrayerWorker", "Exception: ${e.message}", e)
-            Result.retry()
+            return Result.success()
         }
     }
 }

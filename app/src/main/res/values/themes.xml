@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- ✅ DayNight yerine Light: Activity/Fragment kendiliğinden recreate olma riski düşer -->
-    <style name="Base.Theme.DenemeProjesi" parent="Theme.Material3.Light.NoActionBar">
+    <!-- DayNight: ThemeManager ile MODE_NIGHT_YES/NO uygulanır; values-night ile koyu tema -->
+    <style name="Base.Theme.DenemeProjesi" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- === RENKLER === -->
         <item name="colorPrimary">@color/primary_green</item>

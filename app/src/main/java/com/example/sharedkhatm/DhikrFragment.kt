@@ -31,6 +31,10 @@ import android.widget.EditText
  */
 class DhikrFragment : Fragment(R.layout.fragment_dhikr) {
 
+    companion object {
+        const val ARG_PREFILL_NAME = "prefill_name"
+    }
+
     private lateinit var recyclerZikir: RecyclerView
     private lateinit var recyclerHistory: RecyclerView
     private lateinit var layoutHistoryContainer: View
@@ -61,6 +65,10 @@ class DhikrFragment : Fragment(R.layout.fragment_dhikr) {
             setupHistory()
             layoutAddZikir.setOnClickListener { showAddDialog() }
             loadDataAsync()
+            arguments?.getString(ARG_PREFILL_NAME)?.let { prefillName ->
+                arguments = null
+                view.post { showAddDialog(prefillName) }
+            }
         } catch (e: Exception) {
             android.util.Log.e("DhikrFragment", "Zikirmatik açılamadı: ${e.javaClass.simpleName} - ${e.message}", e)
             Toast.makeText(requireContext(), "Zikirmatik açılamadı.", Toast.LENGTH_SHORT).show()
@@ -225,12 +233,13 @@ class DhikrFragment : Fragment(R.layout.fragment_dhikr) {
         Toast.makeText(requireContext(), "Geçmişe eklendi.", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showAddDialog() {
+    private fun showAddDialog(prefillName: String? = null) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_dhikr_edit, null)
         dialogView.findViewById<ImageView>(R.id.iconDialog).setImageResource(android.R.drawable.ic_input_add)
         dialogView.findViewById<TextView>(R.id.txtDialogTitle).text = "Yeni zikir"
         val etName = dialogView.findViewById<EditText>(R.id.etName)
         val etTarget = dialogView.findViewById<EditText>(R.id.etTarget)
+        etName.setText(prefillName ?: "")
         etTarget.setText("33")
         val dialog = MaterialAlertDialogBuilder(requireContext()).setView(dialogView).create()
         dialogView.findViewById<View>(R.id.btnCancel).setOnClickListener { dialog.dismiss() }

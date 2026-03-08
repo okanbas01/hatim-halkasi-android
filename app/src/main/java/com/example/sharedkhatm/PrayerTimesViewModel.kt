@@ -39,14 +39,14 @@ data class PrayerTimesUiState(
         fun empty() = PrayerTimesUiState(
             locationName = "",
             isGps = false,
-            fajr = "--",
-            sunrise = "--",
-            dhuhr = "--",
-            asr = "--",
-            maghrib = "--",
-            isha = "--",
-            nextPrayerName = "--",
-            nextPrayerTime = "--:--",
+            fajr = "",
+            sunrise = "",
+            dhuhr = "",
+            asr = "",
+            maghrib = "",
+            isha = "",
+            nextPrayerName = "",
+            nextPrayerTime = "",
             nextPrayerDesc = "",
             isLoading = false,
             hasData = false
@@ -71,13 +71,13 @@ class PrayerTimesViewModel(application: Application) : AndroidViewModel(applicat
     fun loadFromPrefs() {
         val locationName = prefs.getString("savedCity", null) ?: ""
         val isGps = prefs.getString("locationMode", "UNKNOWN") == "GPS"
-        val fajr = prefs.getString("saved_fajr", null)?.take(5) ?: "--"
-        val sunrise = prefs.getString("saved_sunrise", null)?.take(5) ?: "--"
-        val dhuhr = prefs.getString("saved_dhuhr", null)?.take(5) ?: "--"
-        val asr = prefs.getString("saved_asr", null)?.take(5) ?: "--"
-        val maghrib = prefs.getString("saved_maghrib", null)?.take(5) ?: "--"
-        val isha = prefs.getString("saved_isha", null)?.take(5) ?: "--"
-        val hasData = !fajr.isNullOrBlank() && fajr != "--" && !dhuhr.isNullOrBlank() && dhuhr != "--"
+        val fajr = prefs.getString("saved_fajr", null)?.take(5) ?: ""
+        val sunrise = prefs.getString("saved_sunrise", null)?.take(5) ?: ""
+        val dhuhr = prefs.getString("saved_dhuhr", null)?.take(5) ?: ""
+        val asr = prefs.getString("saved_asr", null)?.take(5) ?: ""
+        val maghrib = prefs.getString("saved_maghrib", null)?.take(5) ?: ""
+        val isha = prefs.getString("saved_isha", null)?.take(5) ?: ""
+        val hasData = !fajr.isNullOrBlank() && !dhuhr.isNullOrBlank()
 
         val timings = if (hasData) Timings(
             Fajr = prefs.getString("saved_fajr", "") ?: "",
@@ -91,10 +91,10 @@ class PrayerTimesViewModel(application: Application) : AndroidViewModel(applicat
 
         val (nextName, nextTime, nextDesc) = if (timings != null) {
             nextPrayerInfo(timings)
-        } else Triple("--", "--:--", "")
+        } else Triple("", "", "")
 
         _prayerState.postValue(PrayerTimesUiState(
-            locationName = locationName.ifBlank { "Konum Seçiniz" },
+            locationName = locationName.ifBlank { "" },
             isGps = isGps,
             fajr = fajr,
             sunrise = sunrise,
@@ -179,7 +179,7 @@ class PrayerTimesViewModel(application: Application) : AndroidViewModel(applicat
             val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
             val nowTime = Date()
             val nowStr = sdf.format(nowTime)
-            val nowParsed = sdf.parse(nowStr) ?: return Triple("--", "--:--", "")
+            val nowParsed = sdf.parse(nowStr) ?: return Triple("", "", "")
 
             val prayerList = listOf(
                 Triple("İMSAK", timings.Fajr, "Sabah Namazı Vakti"),
@@ -200,7 +200,7 @@ class PrayerTimesViewModel(application: Application) : AndroidViewModel(applicat
             val fajrClean = timings.Fajr.split(" ")[0]
             Triple("İMSAK", fajrClean, "Sabah Namazı Vakti")
         } catch (_: Exception) {
-            Triple("--", "--:--", "")
+            Triple("", "", "")
         }
     }
 

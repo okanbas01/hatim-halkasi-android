@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,30 +11,56 @@ android {
     namespace = "com.example.sharedkhatm"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            val props = Properties()
+            val propFile = rootProject.file("keystore.properties")
+            if (propFile.canRead()) {
+                propFile.reader(Charsets.UTF_8).use { props.load(it) }
+            }
+            val storeFileStr = props["RELEASE_STORE_FILE"]?.toString()
+            if (!storeFileStr.isNullOrBlank()) {
+                val keyStoreFile = rootProject.file(storeFileStr)
+                if (keyStoreFile.exists()) {
+                    storeFile = keyStoreFile
+                    storePassword = props["RELEASE_STORE_PASSWORD"]?.toString() ?: ""
+                    keyAlias = props["RELEASE_KEY_ALIAS"]?.toString() ?: ""
+                    keyPassword = props["RELEASE_KEY_PASSWORD"]?.toString() ?: ""
+                }
+            }
+        }
+    }
+
     defaultConfig {
         applicationId = "com.hatimhalkasi.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 25
+        versionCode = 27
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            val releaseSigning = signingConfigs.findByName("release")
+            if (releaseSigning != null && releaseSigning.storeFile?.exists() == true) {
+                signingConfig = releaseSigning
+            }
         }
         debug {
             isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -53,7 +81,63 @@ android {
     }
 }
 
+// Production: Sadece Banner + Rewarded aktif; App Open ve Interstitial release'te kapalı.
+val TEST_PUBLISHER_ID = "3940256099942544"
+tasks.register("checkReleaseAdIds") {
+    doLast {
+        // 0) Main kaynak kodunda test ID olmamalı (hardcoded)
+        file("src/main").walkTopDown()
+            .filter { it.extension in listOf("kt", "java", "xml") }
+            .forEach { f ->
+                if (f.readText().contains(TEST_PUBLISHER_ID)) {
+                    throw GradleException(
+                        "RELEASE BUILD HATASI: $f içinde Google test reklam ID'si bulundu. Kaldırın veya sadece debug kaynakta kullanın."
+                    )
+                }
+            }
+        val releaseStrings = file("src/release/res/values/strings.xml")
+        if (!releaseStrings.exists()) {
+            throw GradleException("src/release/res/values/strings.xml bulunamadı. Release reklam ID'leri tanımlanmalı.")
+        }
+        val content = releaseStrings.readText()
+        // 1) Test yayıncı ID release kaynaklarında OLMAMALI
+        if (TEST_PUBLISHER_ID in content) {
+            throw GradleException(
+                "RELEASE BUILD HATASI: Google test reklam yayıncı ID'si release kaynaklarında bulundu. " +
+                "Production'da yalnızca gerçek AdMob birim ID'leri kullanılmalı."
+            )
+        }
+        // 2) Production'da aktif olan reklamlar: sadece Banner + Rewarded zorunlu
+        val requiredIds = listOf(
+            "admob_banner_id",
+            "admob_rewarded_id"
+        )
+        for (id in requiredIds) {
+            val regex = Regex("""<string name="$id">([^<]*)</string>""")
+            val match = regex.find(content)
+            val value = match?.groupValues?.get(1)?.trim().orEmpty()
+            if (value.isEmpty() || value.contains("PLACEHOLDER", ignoreCase = true) || value.contains("REPLACE", ignoreCase = true)) {
+                throw GradleException(
+                    "RELEASE BUILD HATASI: $id boş veya placeholder. AdMob konsolundan gerçek birim ID girin."
+                )
+            }
+            if (!value.matches(Regex("""ca-app-pub-\d+/\d+"""))) {
+                throw GradleException(
+                    "RELEASE BUILD HATASI: $id geçersiz format. Örnek: ca-app-pub-XXXXXXXXXXXXXXX/YYYYYYYYYY"
+                )
+            }
+        }
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.findByName("mergeReleaseResources")?.dependsOn("checkReleaseAdIds")
+    tasks.findByName("bundleRelease")?.dependsOn("checkReleaseAdIds")
+    tasks.findByName("assembleRelease")?.dependsOn("checkReleaseAdIds")
+}
+
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     // --- TEMEL ---
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
@@ -90,6 +174,12 @@ dependencies {
     // --- KONUM ---
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
+    // --- ADMOB (lazy init, main thread block yok) ---
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
+
+    // --- DATASTORE (24h reklamsız timestamp) ---
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     // --- DİĞER ---
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
@@ -113,6 +203,9 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose:1.9.3")
 
+    // LeakCanary (sadece debug - memory leak tespiti)
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
+
     // --- TEST ---
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
@@ -125,4 +218,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+
+    // Lottie (dark/light mode toggle — assets/Switch.json)
+    implementation("com.airbnb.android:lottie:5.2.0")
 }

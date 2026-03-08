@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 class EsmaAdapter(private val esmaList: List<EsmaName>) :
     RecyclerView.Adapter<EsmaAdapter.EsmaViewHolder>() {
 
+    var onItemClick: ((EsmaName) -> Unit)? = null
+
     class EsmaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtArabic: TextView = itemView.findViewById(R.id.txtEsmaArabic)
         val txtName: TextView = itemView.findViewById(R.id.txtEsmaName)
@@ -28,6 +30,7 @@ class EsmaAdapter(private val esmaList: List<EsmaName>) :
         holder.txtName.text = "${position + 1}. ${item.name}"
         holder.txtMeaning.text = item.meaning
         holder.txtCount.text = item.count.toString()
+        holder.itemView.setOnClickListener { onItemClick?.invoke(item) }
     }
 
     override fun getItemCount() = esmaList.size

@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/bg_header_curved"
-    android:backgroundTint="@color/white"
+    android:background="@color/bg_cream"
     android:paddingBottom="0dp">
 
     <!-- Tutamaç Çizgisi -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
-        android:background="#E0E0E0"
+        android:background="@color/text_grey"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"/>
@@ -24,7 +23,7 @@
         android:text="Vakit Bildirim Ayarları"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/primary_green"
+        android:textColor="@color/header_green"
         android:gravity="center"
         android:layout_marginBottom="20dp"/>
 
@@ -52,7 +51,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="12dp"
-        app:cardBackgroundColor="#FFF3E0"
+        app:cardBackgroundColor="@color/white_card"
         app:strokeWidth="0dp">
 
         <LinearLayout
@@ -66,7 +65,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_nav_spirit"
-                android:tint="#F57C00" />
+                app:tint="@color/primary_green" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -80,14 +79,14 @@
                     android:layout_height="wrap_content"
                     android:text="Kerahat Vakti Uyarısı"
                     android:textStyle="bold"
-                    android:textColor="#E65100"/>
+                    android:textColor="@color/text_dark"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Akşam namazına 45 dk kala uyar"
                     android:textSize="11sp"
-                    android:textColor="#EF6C00"/>
+                    android:textColor="@color/text_grey"/>
             </LinearLayout>
 
             <com.google.android.material.materialswitch.MaterialSwitch
@@ -104,7 +103,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         app:cardCornerRadius="12dp"
-        app:cardBackgroundColor="#E3F2FD"
+        app:cardBackgroundColor="@color/white_card"
         app:strokeWidth="0dp">
 
         <LinearLayout
@@ -114,13 +113,12 @@
             android:padding="16dp"
             android:gravity="center_vertical">
 
-            <!-- ✅ YENİ: Saat/Zil temalı ikon -->
             <ImageView
                 android:id="@+id/imgPreWarningIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_pre_warning"
-                android:tint="#1565C0"
+                app:tint="@color/primary_green"
                 android:contentDescription="Vakit öncesi uyarı" />
 
             <LinearLayout
@@ -135,14 +133,14 @@
                     android:layout_height="wrap_content"
                     android:text="Vakit Öncesi Uyarı"
                     android:textStyle="bold"
-                    android:textColor="#0D47A1"/>
+                    android:textColor="@color/text_dark"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tüm vakitlerden 15 dk önce uyar"
                     android:textSize="11sp"
-                    android:textColor="#1976D2"/>
+                    android:textColor="@color/text_grey"/>
             </LinearLayout>
 
             <com.google.android.material.materialswitch.MaterialSwitch
@@ -160,7 +158,7 @@
         android:gravity="center"
         android:layout_marginTop="24dp"
         android:paddingVertical="16dp"
-        android:background="#F5F5F5">
+        android:background="@color/card_background_light">
 
         <!-- Ezan -->
         <LinearLayout
@@ -179,7 +177,7 @@
                 android:text=": Ezan"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="#666"
+                android:textColor="@color/text_grey"
                 android:layout_marginStart="6dp"/>
         </LinearLayout>
 
@@ -200,7 +198,7 @@
                 android:text=": Uyarı"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="#666"
+                android:textColor="@color/text_grey"
                 android:layout_marginStart="6dp"/>
         </LinearLayout>
 
@@ -221,7 +219,7 @@
                 android:text=": Sessiz"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="#666"
+                android:textColor="@color/text_grey"
                 android:layout_marginStart="6dp"/>
         </LinearLayout>
     </LinearLayout>

@@ -12,7 +12,8 @@ import com.google.android.material.card.MaterialCardView
 
 class ThemeAdapter(
     private val themeList: List<ThemeModel>,
-    private val onThemeSelected: (ThemeModel) -> Unit
+    private val onThemeSelected: (ThemeModel) -> Unit,
+    private val onLockedThemeClick: ((ThemeModel) -> Unit)? = null
 ) : RecyclerView.Adapter<ThemeAdapter.ThemeViewHolder>() {
 
     private var selectedPosition = 0
@@ -20,29 +21,32 @@ class ThemeAdapter(
     inner class ThemeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val card: MaterialCardView = itemView.findViewById(R.id.cardThemeItem)
         val image: ImageView = itemView.findViewById(R.id.imgThemeThumb)
-        // Check image yerine FrameLayout'u alıyoruz
         val selectedOverlay: View = itemView.findViewById(R.id.layoutSelectedState)
 
         fun bind(theme: ThemeModel, position: Int) {
             Glide.with(itemView.context)
                 .load(theme.imageRes)
-                .apply(RequestOptions().transform(CenterCrop()))
+                .apply(RequestOptions().override(400, 400).transform(CenterCrop()))
                 .into(image)
 
             if (position == selectedPosition) {
                 card.strokeWidth = 6
-                selectedOverlay.visibility = View.VISIBLE // Tik katmanını göster
+                selectedOverlay.visibility = View.VISIBLE
             } else {
                 card.strokeWidth = 0
-                selectedOverlay.visibility = View.GONE // Gizle
+                selectedOverlay.visibility = View.GONE
             }
 
             itemView.setOnClickListener {
-                val previousItem = selectedPosition
-                selectedPosition = adapterPosition
-                notifyItemChanged(previousItem)
-                notifyItemChanged(selectedPosition)
-                onThemeSelected(theme)
+                if (theme.isLocked && onLockedThemeClick != null) {
+                    onLockedThemeClick(theme)
+                } else {
+                    val previousItem = selectedPosition
+                    selectedPosition = adapterPosition
+                    notifyItemChanged(previousItem)
+                    notifyItemChanged(selectedPosition)
+                    onThemeSelected(theme)
+                }
             }
         }
     }

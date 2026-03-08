@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,10 +31,17 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.example.sharedkhatm.ads.AdPreferences
+import com.example.sharedkhatm.ads.AdViewModel
 import java.io.File
 import java.io.FileOutputStream
 
 class FridayMessageFragment : Fragment(R.layout.fragment_friday_message) {
+
+    private val adViewModel: AdViewModel by activityViewModels { AdViewModel.Factory(requireActivity().application) }
+
+    private val fridayThemePrefsName = "friday_theme_prefs"
+    private val keyUnlockedResIds = "unlocked_theme_res_ids"
 
     private lateinit var layoutExportArea: View
     private lateinit var imgBackgroundPreview: ImageView
@@ -42,6 +50,7 @@ class FridayMessageFragment : Fragment(R.layout.fragment_friday_message) {
     private lateinit var inputLayoutMessage: TextInputLayout
     private lateinit var rvThemes: RecyclerView
     private lateinit var progressBarThemeLoading: ProgressBar
+    private var themeAdapter: ThemeAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -103,65 +112,19 @@ class FridayMessageFragment : Fragment(R.layout.fragment_friday_message) {
             }
         }
 
-        // --- TEMA LİSTESİ ---
-        val themeList = ArrayList<ThemeModel>()
-
-        // 1. Manuel Temalar
-        themeList.add(ThemeModel(R.drawable.bg_friday_theme_emerald, true))
-        themeList.add(ThemeModel(R.drawable.bg_friday_theme_gold, false))
-
-        // 2. Otomatik Resim Yükleme
+        // --- TEMA LİSTESİ --- (ilk 2 ücretsiz, diğerleri reklam izleyerek açılır)
         val context = requireContext()
-        for (i in 1..30) {
-            val imageName = "bg_theme_$i"
-            val resId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-            if (resId != 0) {
-                themeList.add(ThemeModel(resId, true))
-            }
-        }
+        val unlockedResIds = getUnlockedFridayThemeResIds(context)
+        val themeList = buildFridayThemeList(context, unlockedResIds)
 
         // RecyclerView Kurulumu
         rvThemes.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvThemes.adapter = ThemeAdapter(themeList) { selectedTheme ->
-
-            progressBarThemeLoading.visibility = View.VISIBLE
-
-            Glide.with(this)
-                .load(selectedTheme.imageRes)
-                .placeholder(imgBackgroundPreview.drawable)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        progressBarThemeLoading.visibility = View.GONE
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        model: Any,
-                        target: Target<Drawable>,
-                        dataSource: DataSource,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        progressBarThemeLoading.visibility = View.GONE
-                        return false
-                    }
-                })
-                .centerCrop()
-                .into(imgBackgroundPreview)
-
-            if (selectedTheme.isTextWhite) {
-                tvMessagePreview.setTextColor(Color.WHITE)
-                tvMessagePreview.setShadowLayer(15f, 0f, 0f, Color.BLACK)
-            } else {
-                tvMessagePreview.setTextColor(Color.parseColor("#1B5E20"))
-                tvMessagePreview.setShadowLayer(0f, 0f, 0f, 0)
-            }
-        }
+        themeAdapter = ThemeAdapter(
+            themeList,
+            onThemeSelected = { selectedTheme -> applyTheme(selectedTheme) },
+            onLockedThemeClick = { lockedTheme -> showRewardedToUnlockTheme(lockedTheme) }
+        )
+        rvThemes.adapter = themeAdapter
 
         // --- PAYLAŞ BUTONU ---
         btnShare.setOnClickListener {
@@ -246,5 +209,93 @@ class FridayMessageFragment : Fragment(R.layout.fragment_friday_message) {
             e.printStackTrace()
             Toast.makeText(requireContext(), "Paylaşım hatası: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun applyTheme(selectedTheme: ThemeModel) {
+        progressBarThemeLoading.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(selectedTheme.imageRes)
+            .override(1024, 1024)
+            .placeholder(imgBackgroundPreview.drawable)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progressBarThemeLoading.visibility = View.GONE
+                    return false
+                }
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progressBarThemeLoading.visibility = View.GONE
+                    return false
+                }
+            })
+            .centerCrop()
+            .into(imgBackgroundPreview)
+        if (selectedTheme.isTextWhite) {
+            tvMessagePreview.setTextColor(Color.WHITE)
+            tvMessagePreview.setShadowLayer(15f, 0f, 0f, Color.BLACK)
+        } else {
+            tvMessagePreview.setTextColor(Color.parseColor("#1B5E20"))
+            tvMessagePreview.setShadowLayer(0f, 0f, 0f, 0)
+        }
+    }
+
+    private fun getUnlockedFridayThemeResIds(context: android.content.Context): Set<Int> {
+        val prefs = context.getSharedPreferences(fridayThemePrefsName, android.content.Context.MODE_PRIVATE)
+        val stored = prefs.getStringSet(keyUnlockedResIds, null) ?: return emptySet()
+        return stored.mapNotNull { it.toIntOrNull() }.toSet()
+    }
+
+    private fun saveUnlockedFridayTheme(context: android.content.Context, resId: Int) {
+        val prefs = context.getSharedPreferences(fridayThemePrefsName, android.content.Context.MODE_PRIVATE)
+        val current = getUnlockedFridayThemeResIds(context).toMutableSet()
+        current.add(resId)
+        prefs.edit().putStringSet(keyUnlockedResIds, current.map { it.toString() }.toSet()).apply()
+    }
+
+    private fun buildFridayThemeList(context: android.content.Context, unlockedResIds: Set<Int>): ArrayList<ThemeModel> {
+        val list = ArrayList<ThemeModel>()
+        list.add(ThemeModel(R.drawable.bg_friday_theme_emerald, true, false))
+        list.add(ThemeModel(R.drawable.bg_friday_theme_gold, false, false))
+        for (i in 1..30) {
+            val imageName = "bg_theme_$i"
+            val resId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+            if (resId != 0) {
+                list.add(ThemeModel(resId, true, !unlockedResIds.contains(resId)))
+            }
+        }
+        return list
+    }
+
+    /** Rewarded: Kilitli tema için reklam izle, açıldıktan sonra temayı uygula. */
+    private fun showRewardedToUnlockTheme(lockedTheme: ThemeModel) {
+        AdPreferences.init(requireContext())
+        if (!AdPreferences.shouldShowAds()) return
+        val act = activity ?: return
+        if (act.isFinishing || act.isDestroyed) return
+        adViewModel.showRewarded(act,
+            onRewarded = {
+                saveUnlockedFridayTheme(requireContext(), lockedTheme.imageRes)
+                val newList = buildFridayThemeList(requireContext(), getUnlockedFridayThemeResIds(requireContext()))
+                themeAdapter = ThemeAdapter(
+                    newList,
+                    onThemeSelected = { selectedTheme -> applyTheme(selectedTheme) },
+                    onLockedThemeClick = { t -> showRewardedToUnlockTheme(t) }
+                )
+                rvThemes.adapter = themeAdapter
+                applyTheme(lockedTheme)
+                if (isAdded) Toast.makeText(requireContext(), "Tema açıldı.", Toast.LENGTH_SHORT).show()
+            },
+            onDismissed = { }
+        )
     }
 }

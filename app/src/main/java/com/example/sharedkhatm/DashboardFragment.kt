@@ -31,6 +31,12 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.card.MaterialCardView
+import com.example.sharedkhatm.ads.AdViewModel
+import com.example.sharedkhatm.hicri.HicriCardState
+import com.example.sharedkhatm.location.LocationFallbackManager
+import com.example.sharedkhatm.hicri.HicriTakvimActivity
+import com.example.sharedkhatm.hicri.HicriTakvimViewModel
+import android.widget.FrameLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -69,6 +75,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var cardQuranGuide: MaterialCardView
 
     private val prayerViewModel: PrayerTimesViewModel by activityViewModels()
+    private val hicriViewModel: HicriTakvimViewModel by activityViewModels()
+    private val adViewModel: AdViewModel by activityViewModels { AdViewModel.Factory(requireActivity().application) }
 
     // ✅ FeatureGate listener
     private var gateReg: ListenerRegistration? = null
@@ -88,6 +96,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private val PREFS_LOC = "LocationPrefs"
     private var countDownTimer: CountDownTimer? = null
+    private var isDeterminingLocation: Boolean = false
+
+    private var layoutLocationFallback: View? = null
+    private var txtLocationSubtitle: TextView? = null
+    private var btnPrayerSelectCity: View? = null
 
     private val turkeyCities = arrayOf(
         "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir",
@@ -426,34 +439,90 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         prayerViewModel.prayerState.observe(viewLifecycleOwner, Observer { state ->
             if (!isAdded) return@Observer
+            if (isDeterminingLocation) {
+                txtLocationName.text = "Konum belirleniyor…"
+                imgLocationStatus.setImageResource(android.R.drawable.ic_menu_mylocation)
+                layoutLocationFallback?.visibility = View.VISIBLE
+                txtLocationSubtitle?.text = "Namaz saatleri hazırlanıyor"
+                txtLocationSubtitle?.visibility = View.VISIBLE
+                btnPrayerSelectCity?.visibility = View.GONE
+                txtNextPrayerName.text = ""
+                txtNextPrayerTime.text = "Hazırlanıyor"
+                txtPrayerDesc.text = ""
+                txtCountdown.text = ""
+                timeFajr.text = ""; timeSunrise.text = ""; timeDhuhr.text = ""; timeAsr.text = ""; timeMaghrib.text = ""; timeIsha.text = ""
+                return@Observer
+            }
+            val showDefaultUi = !state.hasData && state.locationName.contains("varsayılan")
+            if (state.hasData) {
+                layoutLocationFallback?.visibility = View.GONE
+            } else {
+                layoutLocationFallback?.visibility = if (showDefaultUi) View.VISIBLE else View.GONE
+                txtLocationSubtitle?.text = if (showDefaultUi) "Gerçek konum için izin verin veya şehir değiştirin" else ""
+                txtLocationSubtitle?.visibility = if (showDefaultUi) View.VISIBLE else View.GONE
+                btnPrayerSelectCity?.visibility = if (showDefaultUi) View.VISIBLE else View.GONE
+            }
             txtLocationName.text = if (state.isLoading && state.locationName.isNotBlank()) "${state.locationName} (Yükleniyor...)" else state.locationName
             imgLocationStatus.setImageResource(
                 if (state.isGps) android.R.drawable.ic_menu_mylocation else android.R.drawable.ic_menu_mapmode
             )
-            timeFajr.text = state.fajr
-            timeSunrise.text = state.sunrise
-            timeDhuhr.text = state.dhuhr
-            timeAsr.text = state.asr
-            timeMaghrib.text = state.maghrib
-            timeIsha.text = state.isha
-            txtNextPrayerName.text = state.nextPrayerName
-            txtNextPrayerTime.text = state.nextPrayerTime
+            timeFajr.text = state.fajr.ifBlank { "" }
+            timeSunrise.text = state.sunrise.ifBlank { "" }
+            timeDhuhr.text = state.dhuhr.ifBlank { "" }
+            timeAsr.text = state.asr.ifBlank { "" }
+            timeMaghrib.text = state.maghrib.ifBlank { "" }
+            timeIsha.text = state.isha.ifBlank { "" }
+            txtNextPrayerName.text = state.nextPrayerName.ifBlank { "" }
+            txtNextPrayerTime.text = state.nextPrayerTime.ifBlank { "" }
             if (state.hasData) {
                 startCountdown(state.nextPrayerTime, state.nextPrayerDesc)
                 updateAllWidgets()
             } else {
                 countDownTimer?.cancel()
-                txtCountdown.text = "--:--"
+                txtCountdown.text = ""
                 txtPrayerDesc.text = ""
             }
         })
 
-        // Uygulama açılışında HomeActivity konum izni istiyor; izin verilince callback Activity'de kalıyor.
-        // Dashboard açıldığında izin varsa ama kayıtlı konum yoksa otomatik konum al.
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && !hasSavedLocation()) {
+        // İlk açılış: kayıtlı şehir varsa loadFromPrefs zaten dolu. Yoksa izin varsa GPS, yoksa BottomSheet + IP fallback.
+        val hasPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (hasPermission && !hasSavedLocation()) {
             txtLocationName.text = "Konum alınıyor..."
             imgLocationStatus.setImageResource(android.R.drawable.ic_menu_mylocation)
             checkGpsAndGetLocation()
+        } else if (!hasSavedLocation() && !hasPermission) {
+            viewLifecycleOwner.lifecycleScope.launch { runIpFallbackAndApply() }
+        }
+    }
+
+    /** ANR güvenli: IP ile şehir veya Ankara varsayılanı, sonra vakitleri çek. Main thread bloklamaz. */
+    private suspend fun runIpFallbackAndApply() {
+        kotlinx.coroutines.withContext(Dispatchers.Main) {
+            isDeterminingLocation = true
+            layoutLocationFallback?.visibility = View.VISIBLE
+            txtLocationSubtitle?.visibility = View.VISIBLE
+            txtLocationSubtitle?.text = "Namaz saatleri hazırlanıyor"
+            btnPrayerSelectCity?.visibility = View.GONE
+            txtLocationName.text = "Konum belirleniyor…"
+            txtNextPrayerTime.text = "Hazırlanıyor"
+        }
+        val result = kotlinx.coroutines.withContext(Dispatchers.IO) {
+            LocationFallbackManager.getCityFromIpOrDefault()
+        }
+        kotlinx.coroutines.withContext(Dispatchers.Main) {
+            if (!isAdded) return@withContext
+            isDeterminingLocation = false
+            val (cityName, lat, lon) = when (result) {
+                is LocationFallbackManager.CityResult.FromIp -> Triple(result.city, result.lat, result.lon)
+                is LocationFallbackManager.CityResult.Default -> Triple(
+                    "${LocationFallbackManager.DEFAULT_CITY} (varsayılan şehir)",
+                    LocationFallbackManager.DEFAULT_LAT,
+                    LocationFallbackManager.DEFAULT_LON
+                )
+            }
+            saveLocationMode("GPS")
+            saveLocationPreference(cityName, lat, lon)
+            prayerViewModel.fetchPrayerTimes(lat, lon)
         }
     }
 
@@ -470,6 +539,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         txtPrayerDesc = view.findViewById(R.id.txtPrayerDesc)
         txtCountdown = view.findViewById(R.id.txtCountdown)
         txtLocationName = view.findViewById(R.id.txtLocationName)
+        layoutLocationFallback = view.findViewById(R.id.layoutLocationFallback)
+        txtLocationSubtitle = view.findViewById(R.id.txtLocationSubtitle)
+        btnPrayerSelectCity = view.findViewById(R.id.btnPrayerSelectCity)
+        btnPrayerSelectCity?.setOnClickListener { showLocationSelectionDialog() }
 
         timeFajr = view.findViewById(R.id.timeFajr)
         timeSunrise = view.findViewById(R.id.timeSunrise)
@@ -514,6 +587,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             bottomSheet.show(parentFragmentManager, "PrayerSettings")
         }
 
+        setupThemeToggle(view)
+
         imgProfile.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, ProfileFragment())
@@ -548,8 +623,109 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         updateContinueCardText(view)
         updateDailyProgress(view)
         updateBadgeIndicator(view)
+        setupHicriCard(view)
     }
-    
+
+    private fun setupHicriCard(view: View) {
+        val cardHicri = view.findViewById<View>(R.id.includeHicriCard)
+        val txtHicriToday = view.findViewById<TextView>(R.id.txtHicriToday)
+        val txtHicriGregorian = view.findViewById<TextView>(R.id.txtHicriGregorian)
+        val txtHicriPeriod = view.findViewById<TextView>(R.id.txtHicriPeriod)
+        val txtHicriNextName = view.findViewById<TextView>(R.id.txtHicriNextName)
+        val txtHicriNextHijri = view.findViewById<TextView>(R.id.txtHicriNextHijri)
+        val txtHicriNextDays = view.findViewById<TextView>(R.id.txtHicriNextDays)
+        val wrapperYaklasan = view.findViewById<View>(R.id.wrapperYaklasan)
+
+        cardHicri?.setOnClickListener {
+            startActivity(Intent(requireContext(), HicriTakvimActivity::class.java))
+        }
+
+        hicriViewModel.cardLiveData.observe(viewLifecycleOwner) { state ->
+            if (!isAdded) return@observe
+            when (state) {
+                is HicriCardState.Loading -> {
+                    txtHicriToday?.text = "..."
+                    txtHicriGregorian?.text = ""
+                    txtHicriPeriod?.visibility = View.GONE
+                    wrapperYaklasan?.visibility = View.GONE
+                }
+                is HicriCardState.Success -> {
+                    txtHicriToday?.text = state.todayHijri
+                    txtHicriGregorian?.text = state.todayGregorian
+                    if (state.periodTitle != null && state.periodRange != null) {
+                        txtHicriPeriod?.visibility = View.VISIBLE
+                        txtHicriPeriod?.text = "${state.periodTitle} (${state.periodRange})"
+                    } else {
+                        txtHicriPeriod?.visibility = View.GONE
+                    }
+                    val next = state.nextSpecialDay
+                    if (next != null) {
+                        wrapperYaklasan?.visibility = View.VISIBLE
+                        txtHicriNextName?.text = next.name
+                        txtHicriNextHijri?.text = next.hijriDisplay
+                        txtHicriNextDays?.text = next.dayOffsetText
+                    } else {
+                        wrapperYaklasan?.visibility = View.GONE
+                    }
+                }
+                is HicriCardState.Error -> {
+                    txtHicriToday?.text = "..."
+                    txtHicriGregorian?.text = state.message
+                    txtHicriPeriod?.visibility = View.GONE
+                    wrapperYaklasan?.visibility = View.GONE
+                }
+            }
+        }
+
+        // Uygulamayı Destekle: Ana sayfa en altında. Rewarded sadece destek amaçlı, reklamsızlık ödülü yok.
+        val cardSupportApp = view.findViewById<View>(R.id.cardSupportAppDashboard)
+        val txtSupportTodayCount = view.findViewById<TextView>(R.id.txtSupportAppTodayCount)
+        fun updateSupportUi() {
+            val count = adViewModel.getTodaySupportCount()
+            val canSupport = adViewModel.canSupport()
+            txtSupportTodayCount?.text = if (canSupport) "Bugün $count kez destek oldunuz" else "Bugün limit doldu. Allah razı olsun \uD83D\uDC9D"
+            cardSupportApp?.isEnabled = canSupport
+            cardSupportApp?.alpha = if (canSupport) 1f else 0.7f
+        }
+        updateSupportUi()
+        cardSupportApp?.setOnClickListener {
+            if (!adViewModel.canSupport()) {
+                Toast.makeText(requireContext(), "Bugün limit doldu. Allah razı olsun \uD83D\uDC9D", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val act = activity
+            if (act == null || act.isFinishing || act.isDestroyed) return@setOnClickListener
+            adViewModel.showRewarded(act,
+                onRewarded = {
+                    if (isAdded) {
+                        Toast.makeText(requireContext(), "Bugün destek olduğunuz için teşekkür ederiz.", Toast.LENGTH_SHORT).show()
+                        updateSupportUi()
+                    }
+                },
+                onDismissed = { }
+            )
+        }
+
+        // Banner: Ana sayfa en alt, scroll ile görünür (ViewModel üzerinden)
+        val adContainer = view.findViewById<FrameLayout>(R.id.includeAdBanner)
+        if (adContainer != null) {
+            if (adViewModel.shouldShowAds(requireContext())) {
+                adViewModel.loadBanner(requireActivity(), adContainer, com.example.sharedkhatm.ads.Screen.HOME)
+            } else {
+                adContainer.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setupThemeToggle(view: View) {
+        ThemeToggleHelper.setup(view, R.id.lottieThemeToggle, {
+            if (isAdded) {
+                val act = requireActivity()
+                if (!act.isFinishing) try { act.recreate() } catch (_: Exception) { }
+            }
+        }, R.id.themeToggleFallbackIcon)
+    }
+
     /** Rozet göstergesi - ana sayfada küçük gösterim */
     private fun updateBadgeIndicator(view: View) {
         try {
@@ -734,8 +910,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         imgLocationStatus.setImageResource(android.R.drawable.ic_menu_mylocation)
         try {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) processLocation(location)
-                else requestNewLocationData()
+                if (location != null) {
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                        processLocation(location)
+                    }
+                } else requestNewLocationData()
             }.addOnFailureListener { requestNewLocationData() }
         } catch (_: SecurityException) { }
     }
@@ -760,8 +939,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 .addOnSuccessListener { location: Location? ->
                     locationTimeoutRunnable?.let { locationTimeoutHandler?.removeCallbacks(it) }
                     if (!isAdded) return@addOnSuccessListener
-                    if (location != null) processLocation(location)
-                    else {
+                    if (location != null) {
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            processLocation(location)
+                        }
+                    } else {
                         Toast.makeText(requireContext(), "Konum alınamadı. GPS'i açın veya şehir seçin.", Toast.LENGTH_LONG).show()
                         loadSavedLocationFromPrefs()
                     }
@@ -777,7 +959,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     /**
-     * Önce vakitleri hemen çek (kullanıcı hızlı görsün), şehir adını arka planda al (düşük cihazı kasmasın).
+     * Ana iş parçacığını bloklamadan konum işleme (ANR önleme).
+     * Çağrılmadan önce Dispatchers.IO ile launch edilmeli.
      */
     private fun processLocation(location: Location) {
         if (!isAdded) return
@@ -785,23 +968,23 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         saveLocationPreference("Konumum", location.latitude, location.longitude)
         prayerViewModel.fetchPrayerTimes(location.latitude, location.longitude)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            val addressText = withContext(Dispatchers.IO) {
-                try {
-                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                    val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    if (!addresses.isNullOrEmpty()) {
-                        val district = addresses[0].subAdminArea ?: ""
-                        val city = addresses[0].adminArea ?: ""
-                        if (district.isNotEmpty()) "$district, $city" else city
-                    } else "Konumum"
-                } catch (_: Exception) {
-                    "Konumum"
-                }
-            }
+        val addressText = try {
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            if (!addresses.isNullOrEmpty()) {
+                val district = addresses[0].subAdminArea ?: ""
+                val city = addresses[0].adminArea ?: ""
+                if (district.isNotEmpty()) "$district, $city" else city
+            } else "Konumum"
+        } catch (_: Exception) {
+            "Konumum"
+        }
+        if (!isAdded) return
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             if (!isAdded) return@launch
             saveLocationPreference(addressText, location.latitude, location.longitude)
             prayerViewModel.loadFromPrefs()
+            updateLocationUI(true, addressText)
         }
     }
 
@@ -882,13 +1065,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun findCoordinatesForCity(cityName: String) {
+        if (!isAdded) return
         txtLocationName.text = "Ayarlanıyor..."
-        Thread {
+        val appContext = requireContext().applicationContext
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                val geocoder = Geocoder(appContext, Locale.getDefault())
                 val addresses = geocoder.getFromLocationName("$cityName, Turkey", 1)
-
-                requireActivity().runOnUiThread {
+                withContext(Dispatchers.Main) {
+                    if (!isAdded) return@withContext
                     if (!addresses.isNullOrEmpty()) {
                         val location = addresses[0]
                         saveLocationPreference(cityName, location.latitude, location.longitude)
@@ -897,8 +1082,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         Toast.makeText(context, "Bulunamadı.", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (_: Exception) { }
-        }.start()
+            } catch (_: Exception) {
+                withContext(Dispatchers.Main) {
+                    if (isAdded) Toast.makeText(context, "Bulunamadı.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setDailyVerse() {
@@ -928,6 +1117,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         locationTimeoutRunnable?.let { locationTimeoutHandler?.removeCallbacks(it) }
         locationTimeoutHandler = null
         locationTimeoutRunnable = null
+        val adContainer = view?.findViewById<FrameLayout>(R.id.includeAdBanner)
+        adViewModel.destroyBanner(adContainer)
         super.onDestroyView()
     }
 

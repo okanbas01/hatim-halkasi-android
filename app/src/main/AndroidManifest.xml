@@ -36,6 +36,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!-- AdMob APP ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7124520199580159~6050359139"/>
+
         <!-- Splash -->
         <activity
             android:name=".SplashActivity"
@@ -83,6 +88,10 @@
             android:name=".SettingsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".hicri.HicriTakvimActivity"
+            android:exported="false"/>
 
         <!-- Widget -->
         <receiver

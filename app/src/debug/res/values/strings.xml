@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DEBUG: Google resmi test reklam birim ID'leri. Release build'de kullanılmaz. -->
+<resources>
+    <string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_rewarded_id">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_app_open_id">ca-app-pub-3940256099942544/3419835294</string>
+</resources>

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/contentHicriTakvim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_90sdp"
+            android:visibility="gone">
+
+            <!-- Üst gradient kart: Hicri tarih (dikey sıra, üst üste binme yok) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_hicri_gradient"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_48sdp"
+                android:paddingBottom="@dimen/_28sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:gravity="center_horizontal">
+
+                <!-- Geri butonu: sola hizalı -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/btnHicriBack"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_gravity="start"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_arrow_back"
+                        app:tint="@color/white"
+                        android:contentDescription="Geri"/>
+                </FrameLayout>
+
+                <!-- Pill: Hicri Takvim -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/bg_hicri_pill"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_16sdp"
+                    android:paddingVertical="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/calendar_hicri"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:text="Hicri Takvim"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <!-- Büyük gün, ay, yıl (önceki yapı) -->
+                <TextView
+                    android:id="@+id/txtHicriDayBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_56ssp"
+                    android:textStyle="bold"
+                    tools:text="9"/>
+
+                <TextView
+                    android:id="@+id/txtHicriMonthBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_22ssp"
+                    android:textStyle="bold"
+                    tools:text="Ramazan"/>
+
+                <TextView
+                    android:id="@+id/txtHicriYearBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp"
+                    tools:text="1447 Hicri"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:background="@drawable/bg_hicri_pill"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_14sdp"
+                    android:paddingVertical="@dimen/_6sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/calendar"
+                        app:tint="@color/white"/>
+                    <TextView
+                        android:id="@+id/txtHicriGregorianPill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="27 Şubat 2026"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ALAN 1: Yaklaşan Özel Günler (kronolojik, en fazla 4) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:cardElevation="@dimen/_4sdp"
+                app:cardBackgroundColor="@color/white_card"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_16sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_12sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:src="@drawable/yaklasan_ozel"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:text="Yaklaşan Özel Günler"
+                            android:textColor="@color/text_dark"
+                            android:textSize="@dimen/_16ssp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerHicri"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="0dp"
+                        android:minHeight="@dimen/_200sdp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ALAN 2: Ay seçici + o aydaki günler -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHicriMonthSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:cardElevation="@dimen/_4sdp"
+                app:cardBackgroundColor="@color/hicri_list_card_bg"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_16sdp">
+
+                    <!-- Ay şeridi: Şevval 10. Ay (sağa sola) -->
+                    <LinearLayout
+                        android:id="@+id/layoutHicriMonthStrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_hicri_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_14sdp"
+                        android:paddingHorizontal="@dimen/_8sdp">
+
+                        <ImageButton
+                            android:id="@+id/btnHicriPrevMonth"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Önceki ay"
+                            android:src="@drawable/ic_arrow_back"
+                            app:tint="@color/white"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtHicriMonthStripName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_20ssp"
+                                android:textStyle="bold"
+                                tools:text="Şevval"/>
+
+                            <TextView
+                                android:id="@+id/txtHicriMonthStripNum"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:textColor="@color/white"
+                                android:alpha="0.9"
+                                android:textSize="@dimen/_12ssp"
+                                tools:text="10. Ay"/>
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/btnHicriNextMonth"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Sonraki ay"
+                            android:rotation="180"
+                            android:src="@drawable/ic_arrow_back"
+                            app:tint="@color/white"/>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerHicriAyGunleri"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="0dp"
+                        android:minHeight="@dimen/_80sdp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ALAN 3: Tüm Özel Günler (kronolojik grid) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_24sdp"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:cardElevation="@dimen/_4sdp"
+                app:cardBackgroundColor="@color/white_card"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_16sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/_12sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:src="@drawable/ozel_gunler"/>
+                        <TextView
+                            android:id="@+id/txtHicriTumOzelTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:textColor="@color/text_dark"
+                            android:textSize="@dimen/_16ssp"
+                            android:textStyle="bold"
+                            tools:text="Tüm Özel Günler (18)"/>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerHicriTumOzel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="0dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressHicri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminateTint="@color/hicri_gradient_start"/>
+
+    <TextView
+        android:id="@+id/txtHicriError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/_24sdp"
+        android:textColor="@color/text_grey"
+        android:visibility="gone"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

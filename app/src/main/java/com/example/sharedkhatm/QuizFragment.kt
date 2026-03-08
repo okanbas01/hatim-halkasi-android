@@ -1,9 +1,8 @@
 package com.example.sharedkhatm
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -15,35 +14,42 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import android.widget.Toast
+import com.example.sharedkhatm.ads.AdPreferences
+import com.example.sharedkhatm.ads.AdViewModel
+import com.example.sharedkhatm.ads.Screen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Bilgi Yarışması: Giriş ekranı Compose (responsive, production).
- * Oyun/oyun bitti XML. State ViewModel + SharedPreferences.
+ * Bilgi Yarışması: 10 soruluk quiz, yanlışta reset yok. Sonuç ekranında yüzde, performans seviyesi, Tekrar Dene / Ana Menü.
+ * State: ViewModel (sealed Loading / Question / Result). Rotation-safe.
  */
 class QuizFragment : Fragment(R.layout.fragment_quiz) {
 
+    private val adViewModel: AdViewModel by activityViewModels { AdViewModel.Factory(requireActivity().application) }
     private val welcomeViewModel: QuizWelcomeViewModel by viewModels()
+    private val quizViewModel: QuizViewModel by viewModels()
 
-    private var currentScore = 0
-    private var questionCount = 0
-    private var usedIds = emptySet<Int>()
-    private var currentQuestion: QuizQuestion? = null
+    companion object {
+        const val TOTAL_QUESTIONS = 10
+    }
+
     private var selectedIndex: Int = -1
     private var answered = false
-    private var gameOver = false
-    private val mainHandler = Handler(Looper.getMainLooper())
-    private val scope = CoroutineScope(Dispatchers.Main + Job())
 
     private lateinit var quizWelcomeCompose: ComposeView
     private lateinit var quizGameScroll: View
     private lateinit var layoutQuizGame: View
-    private lateinit var layoutQuizOver: View
+    private lateinit var layoutQuizResult: View
     private lateinit var txtQuizScore: TextView
     private lateinit var txtQuizQuestionNum: TextView
     private lateinit var txtQuizQuestion: TextView
@@ -52,8 +58,14 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     private lateinit var option2: TextView
     private lateinit var option3: TextView
     private lateinit var btnQuizConfirm: TextView
-    private lateinit var txtQuizFinalScore: TextView
-    private lateinit var btnQuizRestart: TextView
+    private lateinit var txtQuizResultPercent: TextView
+    private lateinit var txtQuizResultCorrect: TextView
+    private lateinit var txtQuizResultWrong: TextView
+    private lateinit var txtQuizResultBadge: TextView
+    private lateinit var txtQuizHighScore: TextView
+    private lateinit var btnQuizTryAgain: TextView
+    private lateinit var btnQuizMainMenu: TextView
+    private var quizAdBannerContainer: FrameLayout? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,7 +79,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
                     QuizWelcomeScreen(
                         viewModel = welcomeViewModel,
                         onStartClick = { startNewGame() },
-                        onContinueClick = { continueGame() },
+                        onContinueClick = { startNewGame() },
                         onRestartClick = { startNewGame() }
                     )
                 }
@@ -75,11 +87,31 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         }
 
         btnQuizConfirm.setOnClickListener { onConfirm() }
-        btnQuizRestart.setOnClickListener { startNewGame() }
+        btnQuizTryAgain.setOnClickListener { startNewGame() }
+        btnQuizMainMenu.setOnClickListener { showMainMenu() }
+        view.findViewById<TextView>(R.id.btnQuizExtraPack).setOnClickListener { showRewardedForExtraPack() }
 
         val options = listOf(option0, option1, option2, option3)
         options.forEachIndexed { index, tv ->
             tv.setOnClickListener { if (!answered) selectOption(index) }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                quizViewModel.state.collectLatest { state ->
+                    when (state) {
+                        is QuizUiState.Loading -> {
+                            quizWelcomeCompose.visibility = View.VISIBLE
+                            quizGameScroll.visibility = View.GONE
+                        }
+                        is QuizUiState.Question -> showQuestionState(state)
+                        is QuizUiState.Result -> {
+                            showResultState(state)
+                            (requireActivity().application as? MyApplication)?.interstitialManager?.maybeShowInterstitial(requireActivity(), com.example.sharedkhatm.ads.AdScreenContext.NORMAL)
+                        }
+                    }
+                }
+            }
         }
 
         refreshStartScreen(isGameOver = false)
@@ -89,7 +121,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         quizWelcomeCompose = view.findViewById(R.id.quizWelcomeCompose)
         quizGameScroll = view.findViewById(R.id.quizGameScroll)
         layoutQuizGame = view.findViewById(R.id.layoutQuizGame)
-        layoutQuizOver = view.findViewById(R.id.layoutQuizOver)
+        layoutQuizResult = view.findViewById(R.id.layoutQuizResult)
         txtQuizScore = view.findViewById(R.id.txtQuizScore)
         txtQuizQuestionNum = view.findViewById(R.id.txtQuizQuestionNum)
         txtQuizQuestion = view.findViewById(R.id.txtQuizQuestion)
@@ -98,77 +130,61 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         option2 = view.findViewById(R.id.option2)
         option3 = view.findViewById(R.id.option3)
         btnQuizConfirm = view.findViewById(R.id.btnQuizConfirm)
-        txtQuizFinalScore = view.findViewById(R.id.txtQuizFinalScore)
-        btnQuizRestart = view.findViewById(R.id.btnQuizRestart)
+        txtQuizResultPercent = view.findViewById(R.id.txtQuizResultPercent)
+        txtQuizResultCorrect = view.findViewById(R.id.txtQuizResultCorrect)
+        txtQuizResultWrong = view.findViewById(R.id.txtQuizResultWrong)
+        txtQuizResultBadge = view.findViewById(R.id.txtQuizResultBadge)
+        txtQuizHighScore = view.findViewById(R.id.txtQuizHighScore)
+        btnQuizTryAgain = view.findViewById(R.id.btnQuizTryAgain)
+        btnQuizMainMenu = view.findViewById(R.id.btnQuizMainMenu)
+        quizAdBannerContainer = view.findViewById(R.id.quizAdBanner)
     }
 
     private fun refreshStartScreen(isGameOver: Boolean) {
         val ctx = requireContext()
         val high = QuizStorage.getHighScore(ctx)
         val last = QuizStorage.getLastScore(ctx)
-        val hasContinue = QuizStorage.loadContinueState(ctx) != null
-        welcomeViewModel.updateState(isGameOver, high, last, hasContinue)
-        quizWelcomeCompose.visibility = View.VISIBLE
-        quizGameScroll.visibility = View.GONE
+        welcomeViewModel.updateState(isGameOver, high, last, hasContinueState = false)
     }
 
     private fun startNewGame() {
         QuizStorage.clearContinueState(requireContext())
-        currentScore = 0
-        questionCount = 0
-        usedIds = emptySet<Int>()
-        gameOver = false
         quizWelcomeCompose.visibility = View.GONE
         quizGameScroll.visibility = View.VISIBLE
-        layoutQuizOver.visibility = View.GONE
+        layoutQuizResult.visibility = View.GONE
         layoutQuizGame.visibility = View.VISIBLE
-        loadNextQuestion()
-    }
 
-    private fun continueGame() {
-        val ctx = requireContext()
-        val state = QuizStorage.loadContinueState(ctx) ?: return
-        currentScore = state.first
-        usedIds = state.second
-        questionCount = usedIds.size
-        gameOver = false
-        quizWelcomeCompose.visibility = View.GONE
-        quizGameScroll.visibility = View.VISIBLE
-        layoutQuizOver.visibility = View.GONE
-        layoutQuizGame.visibility = View.VISIBLE
-        val q = QuizStorage.getQuestionById(ctx, state.third)
-        if (q != null) {
-            currentQuestion = q
-            showQuestion(q)
-        } else {
-            loadNextQuestion()
+        // Banner: Soru cevaplama alanında, Başla sonrası
+        val adContainer = quizAdBannerContainer
+        if (adContainer != null) {
+            if (adViewModel.shouldShowAds(requireContext())) {
+                adContainer.visibility = View.VISIBLE
+                adViewModel.loadBanner(requireActivity(), adContainer, Screen.QUIZ)
+            } else {
+                adContainer.visibility = View.GONE
+            }
+        }
+
+        lifecycleScope.launch {
+            val questions = withContext(Dispatchers.Default) {
+                QuizStorage.pickRandomQuestions(requireContext(), TOTAL_QUESTIONS)
+            }
+            quizViewModel.startQuiz(questions)
         }
     }
 
-    private fun loadNextQuestion() {
-        scope.launch {
-            val q = withContext(Dispatchers.Default) {
-                QuizStorage.pickRandomQuestion(requireContext(), usedIds)
-            }
-            if (q == null) {
-                showStartScreen()
-                return@launch
-            }
-            currentQuestion = q
-            usedIds = usedIds + q.id
-            questionCount = usedIds.size
-            showQuestion(q)
-        }
-    }
-
-    private fun showQuestion(q: QuizQuestion) {
+    private fun showQuestionState(state: QuizUiState.Question) {
+        layoutQuizGame.visibility = View.VISIBLE
+        layoutQuizResult.visibility = View.GONE
         answered = false
         selectedIndex = -1
         btnQuizConfirm.isEnabled = false
         resetOptionBackgrounds()
+
+        val q = state.question
         txtQuizQuestion.text = q.soru
-        txtQuizScore.text = "Puan: $currentScore"
-        txtQuizQuestionNum.text = "$questionCount/∞"
+        txtQuizScore.text = "Doğru: ${state.correctCountSoFar}"
+        txtQuizQuestionNum.text = "${state.questionIndex + 1}/${state.totalQuestions}"
         val options = listOf(option0, option1, option2, option3)
         q.siklar.forEachIndexed { i, text -> options[i].text = text }
     }
@@ -179,6 +195,7 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
         options.forEach { tv ->
             tv.setBackgroundResource(R.drawable.bg_quiz_option)
             tv.setTextColor(ContextCompat.getColor(ctx, R.color.text_dark))
+            tv.animate().scaleX(1f).scaleY(1f).alpha(1f).setDuration(0).start()
         }
     }
 
@@ -196,53 +213,108 @@ class QuizFragment : Fragment(R.layout.fragment_quiz) {
     }
 
     private fun onConfirm() {
-        val q = currentQuestion ?: return
-        if (answered) return
+        val state = quizViewModel.state.value
+        if (state !is QuizUiState.Question || answered) return
         answered = true
         btnQuizConfirm.isEnabled = false
+
+        val q = state.question
         val options = listOf(option0, option1, option2, option3)
         val ctx = requireContext()
         val green = ContextCompat.getColor(ctx, R.color.primary_green)
         val red = ContextCompat.getColor(ctx, android.R.color.holo_red_dark)
         val white = ContextCompat.getColor(ctx, R.color.white)
         val correctIndex = q.dogruIndex
-        if (selectedIndex == correctIndex) {
-            options[selectedIndex].setBackgroundColor(green)
-            options[selectedIndex].setTextColor(white)
-            currentScore += 1
-            val high = QuizStorage.getHighScore(ctx)
-            if (currentScore > high) QuizStorage.saveHighScore(ctx, currentScore)
-            txtQuizScore.text = "Puan: $currentScore"
-            mainHandler.postDelayed({ loadNextQuestion() }, 600)
-        } else {
-            options[selectedIndex].setBackgroundColor(red)
-            options[selectedIndex].setTextColor(white)
-            options[correctIndex].setBackgroundColor(green)
-            options[correctIndex].setTextColor(white)
-            gameOver = true
-            QuizStorage.saveLastScore(ctx, currentScore)
-            QuizStorage.clearContinueState(ctx)
-            mainHandler.postDelayed({ showGameOver() }, 1200)
+
+        options[selectedIndex].setBackgroundColor(if (selectedIndex == correctIndex) green else red)
+        options[selectedIndex].setTextColor(white)
+        options[correctIndex].setBackgroundColor(green)
+        options[correctIndex].setTextColor(white)
+
+        val isCorrect = selectedIndex == correctIndex
+        if (isCorrect) {
+            options[selectedIndex].animate()
+                .scaleX(1.08f).scaleY(1.08f)
+                .setDuration(150)
+                .withEndAction {
+                    options[selectedIndex].animate()
+                        .scaleX(1f).scaleY(1f)
+                        .setDuration(150)
+                        .start()
+                }
+                .start()
+        }
+
+        val highScore = QuizStorage.getHighScore(ctx)
+        lifecycleScope.launch {
+            delay(700)
+            quizViewModel.submitAnswer(selectedIndex, state.totalQuestions, highScore)
         }
     }
 
-    private fun showGameOver() {
+    private fun showResultState(state: QuizUiState.Result) {
         layoutQuizGame.visibility = View.GONE
-        layoutQuizOver.visibility = View.GONE
-        refreshStartScreen(isGameOver = true)
-    }
+        layoutQuizResult.visibility = View.VISIBLE
+        quizAdBannerContainer?.let { adViewModel.destroyBanner(it); it.visibility = View.GONE }
 
-    private fun showStartScreen() {
-        layoutQuizGame.visibility = View.GONE
-        layoutQuizOver.visibility = View.GONE
-        refreshStartScreen(isGameOver = true)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (!gameOver && currentQuestion != null && quizGameScroll.visibility == View.VISIBLE && layoutQuizGame.visibility == View.VISIBLE) {
-            QuizStorage.saveContinueState(requireContext(), currentScore, usedIds, currentQuestion!!.id)
+        val ctx = requireContext()
+        if (state.correctCount > QuizStorage.getHighScore(ctx)) {
+            QuizStorage.saveHighScore(ctx, state.correctCount)
         }
+        QuizStorage.saveLastScore(ctx, state.correctCount)
+
+        txtQuizResultPercent.text = "${state.percentage}%"
+        val percentColor = when {
+            state.percentage >= 90 -> ContextCompat.getColor(ctx, R.color.quiz_score_high)
+            state.percentage >= 50 -> ContextCompat.getColor(ctx, R.color.quiz_score_mid)
+            else -> ContextCompat.getColor(ctx, R.color.quiz_score_low)
+        }
+        txtQuizResultPercent.setTextColor(percentColor)
+
+        txtQuizResultCorrect.text = "Doğru: ${state.correctCount}"
+        txtQuizResultWrong.text = "Yanlış: ${state.wrongCount}"
+        txtQuizResultBadge.text = state.performanceLevel.displayText()
+        txtQuizHighScore.text = "En Yüksek Skorun: ${state.highScore}/$TOTAL_QUESTIONS"
+
+        layoutQuizResult.alpha = 0f
+        layoutQuizResult.scaleX = 0.92f
+        layoutQuizResult.scaleY = 0.92f
+        layoutQuizResult.animate()
+            .alpha(1f).scaleX(1f).scaleY(1f)
+            .setDuration(450)
+            .start()
+    }
+
+    private fun showMainMenu() {
+        quizViewModel.resetToLoading()
+        layoutQuizGame.visibility = View.GONE
+        layoutQuizResult.visibility = View.GONE
+        quizAdBannerContainer?.let { adViewModel.destroyBanner(it); it.visibility = View.GONE }
+        refreshStartScreen(isGameOver = true)
+        quizWelcomeCompose.visibility = View.VISIBLE
+        quizGameScroll.visibility = View.GONE
+    }
+
+    override fun onDestroyView() {
+        quizAdBannerContainer?.let { adViewModel.destroyBanner(it) }
+        quizAdBannerContainer = null
+        super.onDestroyView()
+    }
+
+    /** Rewarded: Ekstra soru paketi açma (isteğe bağlı, iptal edilebilir). */
+    private fun showRewardedForExtraPack() {
+        AdPreferences.init(requireContext())
+        if (!AdPreferences.shouldShowAds()) return
+        val act = activity ?: return
+        if (act.isFinishing || act.isDestroyed) return
+        adViewModel.showRewarded(act,
+            onRewarded = {
+                requireContext().getSharedPreferences("quiz_prefs", android.content.Context.MODE_PRIVATE)
+                    .edit().putBoolean("extra_pack_unlocked", true).apply()
+                if (isAdded) Toast.makeText(requireContext(), "Ekstra soru paketi açıldı.", Toast.LENGTH_SHORT).show()
+            },
+            onDismissed = { }
+        )
     }
 }
 

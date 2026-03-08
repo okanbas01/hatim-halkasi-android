@@ -11,7 +11,6 @@ class EsmaFragment : Fragment(R.layout.fragment_esma) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Geri Butonu
         view.findViewById<View>(R.id.btnBackEsma).setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -19,10 +18,19 @@ class EsmaFragment : Fragment(R.layout.fragment_esma) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerEsma)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        // 99 İsmin Tam Listesi
         val esmaList = getEsmaList()
-
-        recyclerView.adapter = EsmaAdapter(esmaList)
+        val adapter = EsmaAdapter(esmaList)
+        adapter.onItemClick = { esma ->
+            val dhikrFragment = DhikrFragment().apply {
+                arguments = Bundle().apply { putString(DhikrFragment.ARG_PREFILL_NAME, esma.name) }
+            }
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.fragmentContainer, dhikrFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+        recyclerView.adapter = adapter
     }
 
     private fun getEsmaList(): List<EsmaName> {

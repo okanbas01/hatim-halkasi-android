@@ -52,6 +52,13 @@ object QuizStorage {
         return available.getOrNull(Random.nextInt(available.size))
     }
 
+    /** Toplam [count] adet rastgele soru seç (tekrarsız). Quiz başlangıcında kullanılır. */
+    fun pickRandomQuestions(context: Context, count: Int): List<QuizQuestion> {
+        val list = loadQuestions(context)
+        if (list.size <= count) return list.shuffled()
+        return list.shuffled().take(count)
+    }
+
     fun getQuestionById(context: Context, id: Int): QuizQuestion? =
         loadQuestions(context).find { it.id == id }
 

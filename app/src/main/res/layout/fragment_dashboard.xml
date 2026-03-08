@@ -26,7 +26,7 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 app:cardCornerRadius="@dimen/_20sdp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/white_card"
                 app:cardElevation="@dimen/_2sdp">
 
                 <ImageView
@@ -67,6 +67,28 @@
                     android:textStyle="bold"
                     android:fontFamily="serif"/>
             </LinearLayout>
+
+            <!-- Dark/Light mode toggle: Lottie veya fallback ikon her zaman görünsün -->
+            <FrameLayout
+                android:id="@+id/lottieThemeToggle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Tema değiştir (koyu/açık)"
+                android:background="?attr/selectableItemBackgroundBorderless">
+
+                <ImageView
+                    android:id="@+id/themeToggleFallbackIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_read_moon"
+                    app:tint="@color/accent_gold"
+                    android:visibility="visible"
+                    android:contentDescription="Tema değiştir"/>
+            </FrameLayout>
 
             <!-- SAĞ: BİLDİRİM AYARLARI BUTONU -->
             <FrameLayout
@@ -148,6 +170,39 @@
                         android:layout_marginStart="@dimen/_4sdp"/>
                 </LinearLayout>
 
+                <!-- Alt metin + Şehir Seç (varsayılan/yükleniyor durumunda) -->
+                <LinearLayout
+                    android:id="@+id/layoutLocationFallback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/chipLocation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    <TextView
+                        android:id="@+id/txtLocationSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#B0FFFFFF"
+                        android:textSize="@dimen/_9ssp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+                    <TextView
+                        android:id="@+id/btnPrayerSelectCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Şehir Seç"
+                        android:textColor="@color/accent_gold"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold"
+                        android:padding="@dimen/_6sdp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+                </LinearLayout>
+
                 <!-- BAŞLIK -->
                 <TextView
                     android:id="@+id/lblNextPrayer"
@@ -160,7 +215,7 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chipLocation"/>
+                    app:layout_constraintTop_toBottomOf="@+id/layoutLocationFallback"/>
 
                 <!-- VAKİT İSMİ -->
                 <TextView
@@ -392,7 +447,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- ✅ 2.1 KUR’AN’A DANIŞ (Kompakt Kart) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardQuranGuide"
             android:layout_width="match_parent"
@@ -422,7 +476,7 @@
                     android:layout_height="@dimen/_40sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/white"
+                    app:cardBackgroundColor="@color/white_card"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
@@ -507,8 +561,7 @@
                 android:layout_height="@dimen/_36sdp"
                 android:src="@drawable/ic_nav_quran_color"
                 android:padding="@dimen/_8sdp"
-                android:background="@drawable/bg_icon_circle_transparent"
-                android:backgroundTint="#E8F5E9" />
+                android:contentDescription="Kur'an-ı Kerim" />
 
             <TextView
                 android:layout_width="0dp"
@@ -530,7 +583,7 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_8sdp"
             app:cardCornerRadius="@dimen/_16sdp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/white_card"
             app:cardElevation="@dimen/_3sdp"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
@@ -547,7 +600,7 @@
                     android:layout_height="@dimen/_40sdp"
                     app:cardCornerRadius="@dimen/_8sdp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/white"
+                    app:cardBackgroundColor="@color/white_card"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
@@ -623,7 +676,7 @@
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_12sdp"
             app:cardCornerRadius="@dimen/_12sdp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/white_card"
             app:cardElevation="@dimen/_2sdp"
             app:layout_constraintTop_toBottomOf="@+id/cardContinueReading"
             android:visibility="gone">
@@ -814,6 +867,118 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- 6. HİCRİ TAKVİM BAŞLIĞI (kart dışında, Günün Sözü gibi) -->
+        <LinearLayout
+            android:id="@+id/sectionHicri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/cardDailyVerse">
+
+            <ImageView
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:src="@drawable/calendar"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hicri Takvim"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_green"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:fontFamily="serif"/>
+        </LinearLayout>
+
+        <!-- Hicri Takvim kartı (Günün Sözü kartı ile aynı yatay genişlik) -->
+        <include
+            android:id="@+id/includeHicriCard"
+            layout="@layout/card_hicri_takvim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintTop_toBottomOf="@+id/sectionHicri"/>
+
+        <!-- Uygulamayı Destekle (rewarded video – sadece destek, reklamsızlık ödülü yok) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSupportAppDashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/card_background_light"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintTop_toBottomOf="@+id/includeHicriCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/support_app"
+                    android:contentDescription="@null"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp">
+                    <TextView
+                        android:id="@+id/txtSupportAppTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Uygulamayı Destekle 🤍"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_dark"/>
+                    <TextView
+                        android:id="@+id/txtSupportAppDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/support_app_description"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_grey"
+                        android:layout_marginTop="2dp"/>
+                    <TextView
+                        android:id="@+id/txtSupportAppTodayCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bugün 0 kez destek oldunuz"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_grey"
+                        android:layout_marginTop="2dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Banner: Ana sayfa en alt, scroll ile görünür (sticky değil) -->
+        <include
+            android:id="@+id/includeAdBanner"
+            layout="@layout/ad_banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            app:layout_constraintTop_toBottomOf="@+id/cardSupportAppDashboard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

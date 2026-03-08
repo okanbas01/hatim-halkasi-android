@@ -57,12 +57,20 @@ class PrayerReminderScheduler(private val context: Context) {
             "Yatsı" to timings.isha
         )
 
+        // Pil uyarısını azaltmak: setAlarmClock sadece "bir sonraki" vakit için (en yakın). Diğerleri setExactAndAllowWhileIdle.
+        var nextExactTrigger = Long.MAX_VALUE
+        prayers.forEach { (_, timeRaw) ->
+            val prayerMillis = parseMillis(timeRaw, now) ?: return@forEach
+            if (prayerMillis > now && prayerMillis < nextExactTrigger) nextExactTrigger = prayerMillis
+        }
+
         prayers.forEach { (name, timeRaw) ->
             val prayerMillis = parseMillis(timeRaw, now) ?: return@forEach
 
             val soundType = appPrefs.getInt(soundKey(name), 1)
+            val isNextPrayer = (nextExactTrigger != Long.MAX_VALUE && prayerMillis == nextExactTrigger)
 
-            // A) TAM VAKİT — sadece gelecek vakitler
+            // A) TAM VAKİT — sadece gelecek vakitler. setAlarmClock yalnızca bir sonraki vakit için (pil dostu).
             if (soundType != 0) {
                 if (schedule(
                     triggerAt = prayerMillis,
@@ -70,9 +78,10 @@ class PrayerReminderScheduler(private val context: Context) {
                     type = "prayer",
                     prayerName = name,
                     notificationId = nidExact(name),
-                    soundType = soundType
+                    soundType = soundType,
+                    useAlarmClock = isNextPrayer
                 )) {
-                    Log.d("PrayerDebug", "Scheduled $name at: ${formatTimeForLog(prayerMillis)}")
+                    Log.d("PrayerDebug", "Scheduled $name at: ${formatTimeForLog(prayerMillis)}${if (isNextPrayer) " (alarmClock)" else ""}")
                 }
             }
 
@@ -86,7 +95,8 @@ class PrayerReminderScheduler(private val context: Context) {
                         type = "prewarning",
                         prayerName = name,
                         notificationId = nidPre(name),
-                        soundType = 1
+                        soundType = 1,
+                        useAlarmClock = false
                     )) {
                         Log.d("PrayerDebug", "Scheduled $name (15 min before) at: ${formatTimeForLog(warnAt)}")
                     }
@@ -103,7 +113,8 @@ class PrayerReminderScheduler(private val context: Context) {
                         type = "kerahat",
                         prayerName = name,
                         notificationId = 9999,
-                        soundType = 1
+                        soundType = 1,
+                        useAlarmClock = false
                     )) {
                         Log.d("PrayerDebug", "Scheduled kerahat at: ${formatTimeForLog(kerahatAt)}")
                     }
@@ -120,14 +131,15 @@ class PrayerReminderScheduler(private val context: Context) {
         cancel(rcKerahat())
     }
 
-    /** Schedules only if triggerAt is in the future (with 1s margin). Returns true if scheduled. */
+    /** Schedules only if triggerAt is in the future (with 1s margin). useAlarmClock=true sadece tek "sonraki vakit" için (pil uyarısını azaltır). */
     private fun schedule(
         triggerAt: Long,
         requestCode: Int,
         type: String,
         prayerName: String,
         notificationId: Int,
-        soundType: Int
+        soundType: Int,
+        useAlarmClock: Boolean = false
     ): Boolean {
         val now = System.currentTimeMillis()
         if (triggerAt <= now || triggerAt - now < MIN_TRIGGER_MARGIN_MS) return false
@@ -135,6 +147,15 @@ class PrayerReminderScheduler(private val context: Context) {
 
         try {
             when {
+                type == "prayer" && useAlarmClock && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> {
+                    val openApp = Intent(context, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    val showIntent = PendingIntent.getActivity(
+                        context, 0, openApp,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                    val clockInfo = AlarmManager.AlarmClockInfo(triggerAt, showIntent)
+                    alarmManager.setAlarmClock(clockInfo, pi)
+                }
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAt, pi)
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ->
@@ -146,6 +167,20 @@ class PrayerReminderScheduler(private val context: Context) {
         } catch (_: SecurityException) {
             cancel(requestCode)
             return false
+        } catch (e: Exception) {
+            Log.e("PrayerDebug", "schedule failed, fallback to setExact: ${e.message}")
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAt, pi)
+                else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAt, pi)
+                else
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAt, pi)
+                return true
+            } catch (_: Exception) {
+                cancel(requestCode)
+                return false
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.sharedkhatm
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 
@@ -9,6 +10,9 @@ class SpiritualityFragment : Fragment(R.layout.fragment_spirituality) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Banner sadece ana sayfa (Dashboard) en altta; bu ekranda banner yok.
+        view.findViewById<FrameLayout>(R.id.includeAdBanner)?.visibility = View.GONE
 
         // Kartlar
         val cardZikirmatik = view.findViewById<CardView>(R.id.cardZikirmatik)
@@ -47,5 +51,10 @@ class SpiritualityFragment : Fragment(R.layout.fragment_spirituality) {
             .replace(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onDestroyView() {
+        view?.rootView?.clearFocus()
+        super.onDestroyView()
     }
 }

@@ -29,6 +29,8 @@ class SplashActivity : AppCompatActivity() {
     private val PREFS = "AppGlobalPrefs"
 
     private var splashStartTime = 0L
+    private val pendingRunnables = mutableListOf<Runnable>()
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,40 +80,38 @@ class SplashActivity : AppCompatActivity() {
 
     private fun startAnimation(logo: ImageView, title: TextView, subtitle: TextView) {
         val interpolator = AccelerateDecelerateInterpolator()
-        val mainHandler = Handler(Looper.getMainLooper())
 
-        // ObjectAnimator — View.animate() yerine (OPPO / Android 15'te daha güvenilir)
         val logoAlpha = ObjectAnimator.ofFloat(logo, View.ALPHA, 0f, 1f).apply {
-            duration = 700
-            this.setInterpolator(interpolator)
+            duration = 600
+            setInterpolator(interpolator)
         }
         val logoTy = ObjectAnimator.ofFloat(logo, View.TRANSLATION_Y, 150f, 0f).apply {
-            duration = 700
-            this.setInterpolator(interpolator)
+            duration = 600
+            setInterpolator(interpolator)
         }
         val logoSet = AnimatorSet().apply { playTogether(logoAlpha, logoTy) }
 
         val titleAlpha = ObjectAnimator.ofFloat(title, View.ALPHA, 0f, 1f).apply {
-            duration = 600
-            startDelay = 200
-            this.setInterpolator(interpolator)
+            duration = 500
+            startDelay = 150
+            setInterpolator(interpolator)
         }
         val titleTy = ObjectAnimator.ofFloat(title, View.TRANSLATION_Y, 200f, 0f).apply {
-            duration = 600
-            startDelay = 200
-            this.setInterpolator(interpolator)
+            duration = 500
+            startDelay = 150
+            setInterpolator(interpolator)
         }
         val titleSet = AnimatorSet().apply { playTogether(titleAlpha, titleTy) }
 
         val subtitleAlpha = ObjectAnimator.ofFloat(subtitle, View.ALPHA, 0f, 1f).apply {
-            duration = 600
-            startDelay = 400
-            this.setInterpolator(interpolator)
+            duration = 500
+            startDelay = 300
+            setInterpolator(interpolator)
         }
         val subtitleTy = ObjectAnimator.ofFloat(subtitle, View.TRANSLATION_Y, 250f, 0f).apply {
-            duration = 600
-            startDelay = 400
-            this.setInterpolator(interpolator)
+            duration = 500
+            startDelay = 300
+            setInterpolator(interpolator)
         }
         val subtitleSet = AnimatorSet().apply {
             playTogether(subtitleAlpha, subtitleTy)
@@ -123,24 +123,37 @@ class SplashActivity : AppCompatActivity() {
         }
 
         logoSet.start()
-        mainHandler.postDelayed({ titleSet.start() }, 50)
-        mainHandler.postDelayed({ subtitleSet.start() }, 50)
+        val r1 = Runnable { titleSet.start() }
+        val r2 = Runnable { subtitleSet.start() }
+        pendingRunnables.add(r1)
+        pendingRunnables.add(r2)
+        mainHandler.postDelayed(r1, 50)
+        mainHandler.postDelayed(r2, 50)
+    }
+
+    override fun onDestroy() {
+        pendingRunnables.forEach { mainHandler.removeCallbacks(it) }
+        pendingRunnables.clear()
+        super.onDestroy()
     }
 
     private fun ensureMinDurationThenRoute() {
-        val minDuration = 1800L
+        val minDuration = 1200L
         val elapsed = SystemClock.uptimeMillis() - splashStartTime
         if (elapsed >= minDuration) {
             route()
         } else {
             val remaining = minDuration - elapsed
-            window.decorView.postDelayed({
-                if (!isFinishing) route()
-            }, remaining)
+            val r = Runnable {
+                if (!isFinishing && !isDestroyed) route()
+            }
+            pendingRunnables.add(r)
+            mainHandler.postDelayed(r, remaining)
         }
     }
 
     private fun route() {
+        if (isFinishing || isDestroyed) return
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val isGuest = prefs.getBoolean("isGuest", false)
         val user = auth.currentUser
@@ -155,13 +168,15 @@ class SplashActivity : AppCompatActivity() {
         if (isGuest) {
             auth.signInAnonymously()
                 .addOnSuccessListener {
+                    if (isFinishing || isDestroyed) return@addOnSuccessListener
                     prefs.edit().putBoolean("isGuest", true).apply()
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
                     finish()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Misafir girişi başlatılamadı: ${e.message}", Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this, WelcomeActivity::class.java))
+                    if (isFinishing || isDestroyed) return@addOnFailureListener
+                    Toast.makeText(this@SplashActivity, "Misafir girişi başlatılamadı: ${e.message}", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     finish()
                 }

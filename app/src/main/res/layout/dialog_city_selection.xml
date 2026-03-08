@@ -6,7 +6,7 @@
     android:layout_height="500dp"
     app:cardCornerRadius="24dp"
     app:cardElevation="0dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardBackgroundColor="@color/white_card">
     <!-- height="500dp" verdik ki liste sığsın, ekran küçükse otomatik küçülür -->
 
     <LinearLayout

@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dostlarını bul, hatim halkasına davet et."
-                android:textColor="#E8F5E9"
+                android:textColor="@color/header_subtitle"
                 android:textSize="@dimen/_11ssp"
                 android:layout_marginTop="@dimen/_4sdp"/>
         </LinearLayout>
@@ -52,7 +52,7 @@
             android:layout_marginTop="@dimen/_minus24sdp"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="@dimen/_4sdp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/white_card"
             app:layout_constraintTop_toBottomOf="@+id/headerFriends">
 
             <LinearLayout

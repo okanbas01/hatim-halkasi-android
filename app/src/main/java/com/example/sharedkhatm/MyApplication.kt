@@ -4,13 +4,27 @@ import android.app.Application
 import android.os.StrictMode
 import android.util.Log
 import androidx.work.*
+import com.example.sharedkhatm.ads.AdManager
+import com.example.sharedkhatm.ads.AdManagerImpl
+import com.example.sharedkhatm.ads.AdPreferences
+import com.example.sharedkhatm.ads.AdRemoteConfig
+import com.example.sharedkhatm.ads.AppOpenManager
+import com.example.sharedkhatm.ads.BannerStateController
+import com.example.sharedkhatm.ads.BannerStateControllerImpl
+import com.example.sharedkhatm.ads.InterstitialManager
+import com.example.sharedkhatm.ads.RewardedAdManager
+import com.example.sharedkhatm.ads.RewardedAdManagerImpl
+import com.example.sharedkhatm.ads.SupportAdTracker
+import com.example.sharedkhatm.ads.SupportAdTrackerImpl
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -18,8 +32,29 @@ class MyApplication : Application() {
 
     private val appScope = CoroutineScope(Dispatchers.IO)
 
+    private var _supportAdTracker: SupportAdTracker? = null
+    private var _bannerStateController: BannerStateController? = null
+    private var _rewardedAdManager: RewardedAdManager? = null
+    private var _adManager: AdManager? = null
+    private var _interstitialManager: InterstitialManager? = null
+    private var _appOpenManager: AppOpenManager? = null
+
+    val supportAdTracker: SupportAdTracker
+        get() = _supportAdTracker ?: SupportAdTrackerImpl(this).also { _supportAdTracker = it }
+    val bannerStateController: BannerStateController
+        get() = _bannerStateController ?: BannerStateControllerImpl(this).also { _bannerStateController = it }
+    val rewardedAdManager: RewardedAdManager
+        get() = _rewardedAdManager ?: RewardedAdManagerImpl(this, supportAdTracker).also { _rewardedAdManager = it }
+    val adManager: AdManager
+        get() = _adManager ?: AdManagerImpl(this, bannerStateController).also { _adManager = it }
+    val interstitialManager: InterstitialManager
+        get() = _interstitialManager ?: InterstitialManager(this).also { _interstitialManager = it }
+    val appOpenManager: AppOpenManager
+        get() = _appOpenManager ?: AppOpenManager(this).also { _appOpenManager = it }
+
     override fun onCreate() {
         super.onCreate()
+        ThemeManager.applyStoredMode(this)
 
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(
@@ -38,25 +73,50 @@ class MyApplication : Application() {
             )
         }
 
-        // 🔥 Firebase init (main thread'de ama hafif)
         FirebaseApp.initializeApp(this)
-
         FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
             PlayIntegrityAppCheckProviderFactory.getInstance()
         )
 
-        // 🔍 Auth state log
-        val auth = FirebaseAuth.getInstance()
-        auth.addAuthStateListener { a ->
-            val u = a.currentUser
-            Log.d("AUTH_STATE", "currentUser=${u?.uid} anonymous=${u?.isAnonymous}")
+        if (BuildConfig.DEBUG) {
+            FirebaseAuth.getInstance().addAuthStateListener { a ->
+                val u = a.currentUser
+                Log.d("AUTH_STATE", "currentUser=${u?.uid} anonymous=${u?.isAnonymous}")
+            }
         }
 
-        // 🔥 RemoteConfig background fetch (ANR FIX)
-        preloadFeatureGate()
+        AdPreferences.init(this)
 
+        preloadFeatureGate()
         enqueueRefreshNow()
         scheduleDailyRefresh()
+
+        // Cold start: Application onCreate içinde ağır reklam yükleme YASAK. Init/preload Coroutine + Dispatchers.IO ile ertelenir.
+        appScope.launch {
+            withContext(Dispatchers.IO) {
+                try { AdRemoteConfig.fetchAndActivate() } catch (_: Exception) { }
+            }
+            delay(800)
+            withContext(Dispatchers.Main) {
+                try {
+                    com.google.android.gms.ads.MobileAds.initialize(this@MyApplication) {
+                        val builder = com.google.android.gms.ads.RequestConfiguration.Builder()
+                            .setTagForChildDirectedTreatment(com.google.android.gms.ads.RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_FALSE)
+                            .setTagForUnderAgeOfConsent(com.google.android.gms.ads.RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_FALSE)
+                            .setMaxAdContentRating(com.google.android.gms.ads.RequestConfiguration.MAX_AD_CONTENT_RATING_PG)
+                        if (com.example.sharedkhatm.BuildConfig.DEBUG) {
+                            builder.setTestDeviceIds(com.example.sharedkhatm.ads.AdManagerImpl.TEST_DEVICE_IDS)
+                        }
+                        com.google.android.gms.ads.MobileAds.setRequestConfiguration(builder.build())
+                        rewardedAdManager.preloadRewarded()
+                        interstitialManager.preload()
+                        appOpenManager.preload()
+                    }
+                } catch (e: Exception) {
+                    Log.e("MyApplication", "AdMob init error", e)
+                }
+            }
+        }
     }
 
     /**

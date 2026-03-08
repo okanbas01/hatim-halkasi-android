@@ -51,9 +51,10 @@ class JuzAdapter(private val juzList: ArrayList<Juz>) :
                 holder.imgStatus.setImageResource(android.R.drawable.ic_menu_edit) // Kalem ikonu
                 holder.imgStatus.setColorFilter(Color.parseColor("#F57F17"))
 
-                // İsim Görünür
+                // İsim görünür; kart açık sarı olduğu için koyu renk (koyu temada da okunaklı)
                 holder.txtOwner.visibility = View.VISIBLE
                 holder.txtOwner.text = juz.ownerName ?: "Biri"
+                holder.txtOwner.setTextColor(Color.parseColor("#1B5E20"))
             }
             2 -> { // TAMAMLANDI
                 holder.cardView.setCardBackgroundColor(Color.parseColor("#C8E6C9")) // Açık Yeşil
@@ -62,9 +63,10 @@ class JuzAdapter(private val juzList: ArrayList<Juz>) :
                 holder.imgStatus.setImageResource(R.drawable.ic_check_bold) // Tik ikonu
                 holder.imgStatus.setColorFilter(Color.parseColor("#1B5E20"))
 
-                // İsim Görünür
+                // İsim görünür; kart açık yeşil olduğu için koyu renk (koyu temada da okunaklı)
                 holder.txtOwner.visibility = View.VISIBLE
                 holder.txtOwner.text = juz.ownerName ?: "Biri"
+                holder.txtOwner.setTextColor(Color.parseColor("#1B5E20"))
             }
         }
 

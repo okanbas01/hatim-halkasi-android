@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 /**
- * Görüş ve Destek sayfası: Geri Bildirim kartı → FeedbackFragment;
- * Bizi Destekleyenler kartı → aynı sayfada genişleyen detay (Roof Atelier, Chrome Custom Tabs).
+ * Görüş ve Destek sayfası: Geri Bildirim Gönder ve Bizi Destekleyenler kartları.
  */
 class SupportFragment : Fragment(R.layout.fragment_support) {
 
@@ -58,6 +58,10 @@ class SupportFragment : Fragment(R.layout.fragment_support) {
         view.findViewById<View>(R.id.btnSupportVisitWeb).setOnClickListener {
             openUrl(roofAtelierUrl)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     private fun openUrl(url: String) {

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardHicriTakvim"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_14sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardBackgroundColor="@color/hicri_list_card_bg"
+    app:strokeWidth="0dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:minHeight="@dimen/_72sdp">
+
+        <!-- Sol accent: ince mor çizgi -->
+        <View
+            android:layout_width="@dimen/_4sdp"
+            android:layout_height="match_parent"
+            android:background="@color/hicri_pill_bg"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/_14sdp"
+            android:paddingHorizontal="@dimen/_14sdp"
+            android:paddingEnd="@dimen/_16sdp">
+
+            <TextView
+                android:id="@+id/lblBugunTarih"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bugünkü tarih"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/_11ssp"
+                tools:ignore="SmallSp"/>
+
+            <TextView
+                android:id="@+id/txtHicriToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="10 Ramazan 1447 H"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/_16ssp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/txtHicriGregorian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="28 Şubat 2026 Cumartesi"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/_12ssp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <!-- Özel dönem (Ramazan vb.) -->
+            <TextView
+                android:id="@+id/txtHicriPeriod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="Ramazan (1 - 30 Ramazan 1447)"
+                android:textColor="@color/primary_green"
+                android:textSize="@dimen/_11ssp"
+                android:visibility="gone"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <!-- Yaklaşan günler bloğu (next yoksa Fragment'ta gizlenir) -->
+            <LinearLayout
+                android:id="@+id/wrapperYaklasan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <View
+                    android:id="@+id/dividerHicri"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/input_stroke"/>
+
+                <TextView
+                    android:id="@+id/lblYaklasanGunler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="Yaklaşan Günler"
+                    android:textColor="@color/text_grey"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutHicriNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/_6sdp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:minWidth="0dp">
+                        <TextView
+                            android:id="@+id/txtHicriNextName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ramazan Bayramı"
+                            android:textColor="@color/text_dark"
+                            android:textSize="@dimen/_13ssp"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:ellipsize="end"/>
+                        <TextView
+                            android:id="@+id/txtHicriNextHijri"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 - 3 Şevval 1447"
+                            android:textColor="@color/text_grey"
+                            android:textSize="@dimen/_11ssp"
+                            android:maxLines="1"
+                            android:ellipsize="end"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtHicriNextDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:background="@drawable/bg_hicri_tag"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_4sdp"
+                        android:text="17 gün kaldı"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

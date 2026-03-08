@@ -231,17 +231,20 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
         val bigText = if (extra.isBlank()) message else "$message\n\n$extra"
         val colorPrimary = ContextCompat.getColor(applicationContext, R.color.primary_green)
 
-        // ✅ Bildirim içi renkli logo
+        // ✅ Bildirim içi renkli logo (OOM önlemi: inSampleSize ile küçük decode)
+        val opts = android.graphics.BitmapFactory.Options().apply {
+            inSampleSize = 2
+            inPreferredConfig = android.graphics.Bitmap.Config.RGB_565
+        }
         val largeIconBitmap = BitmapFactory.decodeResource(
             applicationContext.resources,
-            R.mipmap.ic_launcher_round
+            R.mipmap.ic_launcher_round,
+            opts
         )
 
         val builder = NotificationCompat.Builder(applicationContext, channelId)
-            // ✅ Small icon: BEYAZ SVG (status bar)
             .setSmallIcon(R.drawable.ic_notification_app)
-            // ✅ Large icon: RENKLİ LOGO (notification content)
-            .setLargeIcon(largeIconBitmap)
+            .apply { if (largeIconBitmap != null) setLargeIcon(largeIconBitmap) }
             .setColor(colorPrimary)
             .setContentTitle(title)
             .setContentText(message)

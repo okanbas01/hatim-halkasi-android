@@ -118,19 +118,19 @@ fun QuizWelcomeScreen(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Doğru cevapladıkça puan artar. Yanlışta oyun biter.",
+                    text = "10 soruyu cevapla. Tüm sorular bittikten sonra skorunu gör.",
                     style = bodyMediumStyle,
                     color = White.copy(alpha = 0.9f),
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "En Yüksek Puan: ${state.highScore}",
+                    text = "En Yüksek Skorun: ${state.highScore}/10",
                     style = bodyLargeStyle,
                     color = White
                 )
                 Text(
-                    text = if (state.lastScore >= 0) "Son Puan: ${state.lastScore}" else "Son Puan: -",
+                    text = if (state.lastScore >= 0) "Son Skor: ${state.lastScore}/10" else "Son Skor: -",
                     style = bodyLargeStyle,
                     color = White
                 )
